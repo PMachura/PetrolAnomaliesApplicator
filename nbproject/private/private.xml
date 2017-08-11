@@ -5,10 +5,8 @@
         <group>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/datatypes/TankMeasure.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/datatypes/RefuelMeasure.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/FXMLDocumentController.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/datatypes/NozzleMeasure.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/datatypes/HeightVolumeMapper.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/FXMLDocument.fxml</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/datatypes/FileHandler.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/PetrolAnomaliesApplicator.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/leakage/TankLeakageApplicator.java</file>
