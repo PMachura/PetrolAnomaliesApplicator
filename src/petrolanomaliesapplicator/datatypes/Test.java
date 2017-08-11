@@ -7,6 +7,9 @@ package petrolanomaliesapplicator.datatypes;
 
 import java.io.FileNotFoundException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import probebreaccident.ProbeHangApplicator;
 
 /**
  *
@@ -16,11 +19,13 @@ public class Test {
     
     
     public static void main(String [] args) throws FileNotFoundException, ParseException{
-    //   FileHandler.loadTankMeasures("dane/Zestaw 1/tankMeasures.log");
+       Collection<TankMeasure> tankMeasures = FileHandler.loadTankMeasures("dane/Zestaw 1/tankMeasures.log");
+       Collection<TankMeasure> editedTankMeasures = ProbeHangApplicator.applyProbeHang(tankMeasures, 1, LocalDateTime.of(2014, 1, 7, 23, 0, 0), LocalDateTime.of(2014, 1, 7, 23, 45, 0));
+       editedTankMeasures.forEach((TankMeasure tankMeasure)->System.out.println(tankMeasure));
     //    FileHandler.loadNozzleMeasures("dane/Zestaw 1/nozzleMeasures.log");
     //    FileHandler.loadRefuelMeasures("dane/Zestaw 1/refuel.log");
-        FileHandler.loadHeightVolumeMapper("dane/mapowanie/Tank1_10012.csv");
-        HeightVolumeMapper hightVolumeMapper = new HeightVolumeMapper(FileHandler.loadHightVolumeMappers());
+    //    FileHandler.loadHeightVolumeMapper("dane/mapowanie/Tank1_10012.csv");
+    //   HeightVolumeMapper hightVolumeMapper = new HeightVolumeMapper(FileHandler.loadHightVolumeMappers());
     }
     
 }

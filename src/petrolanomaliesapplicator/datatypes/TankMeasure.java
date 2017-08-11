@@ -36,7 +36,21 @@ public class TankMeasure {
         this.waterVolume = waterVolume;
     }
     
-    
+    public TankMeasure copy(){
+        TankMeasure tankMeasureCopy = new TankMeasure();
+        tankMeasureCopy.setDateTime(dateTime);
+        tankMeasureCopy.setFuelHeight(fuelHeight);
+        tankMeasureCopy.setFuelTemperature(fuelTemperature);
+        tankMeasureCopy.setFuelVolume(fuelVolume);
+        tankMeasureCopy.setLocationId(locationId);
+        tankMeasureCopy.setMeterId(meterId);
+        tankMeasureCopy.setTankId(tankId);
+        tankMeasureCopy.setWaterHeight(waterHeight);
+        tankMeasureCopy.setWaterVolume(waterVolume);
+        
+        return tankMeasureCopy;
+        
+    }
     
     public LocalDateTime getDateTime() {
         return dateTime;
