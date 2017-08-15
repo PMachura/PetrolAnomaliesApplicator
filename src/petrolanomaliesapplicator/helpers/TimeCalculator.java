@@ -15,6 +15,12 @@ import java.time.LocalDateTime;
  */
 public class TimeCalculator {
 
+    /**
+     * Calculates time in hours between given end and start date
+     * @param start
+     * @param end
+     * @return 
+     */
     public static Double durationInHours(LocalDateTime start, LocalDateTime end){
         return Duration.between(start,end).toMillis()/1000.0/60.0/60.0;
     }

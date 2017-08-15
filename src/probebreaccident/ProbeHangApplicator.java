@@ -16,6 +16,15 @@ import petrolanomaliesapplicator.datatypes.TankMeasure;
  */
 public class ProbeHangApplicator {
 
+    /**
+     * Applys probe hang anomaly to given TankMeasure collection
+     * Modifies only fuel height attribute
+     * @param tankMeasures
+     * @param tankId
+     * @param startTime
+     * @param endTime
+     * @return 
+     */
     public static Collection<TankMeasure> applyProbeHang(Collection<TankMeasure> tankMeasures, Integer tankId, LocalDateTime startTime, LocalDateTime endTime) {
         Collection<TankMeasure> modifiedTankMeasures = new ArrayList<TankMeasure>();
         Double readFuelHeight = null;

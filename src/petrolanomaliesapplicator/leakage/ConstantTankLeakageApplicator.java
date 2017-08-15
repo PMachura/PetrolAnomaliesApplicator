@@ -17,6 +17,16 @@ import petrolanomaliesapplicator.helpers.TimeCalculator;
  */
 public class ConstantTankLeakageApplicator {
 
+    /**
+     * Applys constant leakage to given TankMeasure collection
+     * Modifies only fuel volume attribute
+     * @param tankMeasures
+     * @param tankId
+     * @param startTime
+     * @param endTime
+     * @param leakageVolumePerHour
+     * @return 
+     */
     public static Collection<TankMeasure> applyConstantLeakage(Collection<TankMeasure> tankMeasures, Integer tankId, LocalDateTime startTime, LocalDateTime endTime, Double leakageVolumePerHour) {
 
         Collection<TankMeasure> modifiedTankMeasures = new ArrayList<TankMeasure>();
@@ -34,10 +44,12 @@ public class ConstantTankLeakageApplicator {
                 modifiedTankMeasure.setFuelVolume(modifiedTankMeasure.getFuelVolume() - elapsedHours * leakageVolumePerHour);
                 modifiedTankMeasures.add(modifiedTankMeasure);
 
-            } else {
+            } else if(tankMeasure.getTankId().equals(tankId) && tankMeasure.getDateTime().isAfter(endTime)) {
                 TankMeasure modifiedTankMeasure = tankMeasure.copy();
                 modifiedTankMeasure.setFuelVolume(modifiedTankMeasure.getFuelVolume() - wholeLeakageVolume);
                 modifiedTankMeasures.add(modifiedTankMeasure);
+            } else {
+                modifiedTankMeasures.add(tankMeasure.copy());
             }
 
         }
