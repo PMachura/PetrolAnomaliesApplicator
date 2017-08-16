@@ -1,32 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600" prefWidth="1000" xmlns:fx="http://javafx.com/fxml/1" fx:controller="petrolanomaliesapplicator.FXMLDocumentController">
-    <children>
-        <Label layoutX="10" layoutY="5" minHeight="16" minWidth="69" fx:id="tankMeasuresLabel" />
-        <Button layoutX="10" layoutY="30" text="Choose file" onAction="#handleLoadTankMeasures" fx:id="loadTankMeasuresButton" />
-        <Label layoutX="100" layoutY="30" minHeight="16" minWidth="69" fx:id="tankMeasuresFileLabel" />
-        <Separator layoutX="0" layoutY="60" minWidth="1000" /> 
-        
-        <Label layoutX="10" layoutY="70" minHeight="16" minWidth="50" fx:id="tankLabel" />
-        <ChoiceBox layoutX="10" layoutY="90" fx:id="tankChoiceBox" />
-        
-        <Label layoutX="70" layoutY="70" minHeight="16" minWidth="50" fx:id="constantTankLeakage" />
-        <TextField layoutX="70" layoutY="90" fx:id="constantTankLeakageValue" />
-        
-        <Label layoutX="250" layoutY="70" minHeight="16" minWidth="50" fx:id="dateStartLabel" />
-        <TextField layoutX="250" layoutY="90" fx:id="dateStartValue" />
-        
-        <Label layoutX="550" layoutY="70" minHeight="16" minWidth="50" fx:id="dateEndLabel" />
-        <TextField layoutX="550" layoutY="90" fx:id="dateEndValue" />
-        
-        
-        
-        <Button layoutX="485" layoutY="500" text="Start applicator" onAction="#handleStartApplicator" fx:id="startApplicatorButton" />
-    </children>
-</AnchorPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="petrolanomaliesapplicator.FXMLDocumentController">
+   <children>
+      <AnchorPane prefHeight="54.0" prefWidth="807.0">
+         <children>
+            <Separator layoutY="48.0" prefHeight="6.0" prefWidth="800.0" />
+            <Label alignment="BASELINE_LEFT" layoutX="14.0" layoutY="19.0" text="Tank Measures File" textAlignment="CENTER">
+               <font>
+                  <Font name="Consolas Bold" size="14.0" />
+               </font>
+            </Label>
+            <Button layoutX="178.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleLoadTankMeasures" text="Load file">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Button>
+            <Label fx:id="tankMeasuresFileLabel" layoutX="286.0" layoutY="19.0" prefHeight="14.0" prefWidth="124.0">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="54.0" prefHeight="281.0" prefWidth="807.0">
+         <children>
+            <Label layoutX="14.0" layoutY="6.0" text="Applicator's Options">
+               <font>
+                  <Font name="Consolas Bold" size="14.0" />
+               </font>
+            </Label>
+            <CheckBox fx:id="constantTankLeakageApplicator" layoutX="14.0" layoutY="57.0" mnemonicParsing="false" text="Constant Leakage">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </CheckBox>
+            <CheckBox layoutX="14.0" layoutY="108.0" mnemonicParsing="false" text="Variable Leakage">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </CheckBox>
+            <CheckBox layoutX="14.0" layoutY="157.0" mnemonicParsing="false" text="Probe Hang">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </CheckBox>
+            <Label layoutX="269.0" layoutY="30.0" prefHeight="17.0" prefWidth="193.0" text="Date (yyyy-mm-ddThh:mm:ss)">
+               <font>
+                  <Font name="Consolas" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="159.0" layoutY="58.0" text="Start">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="constantTankLeakageDateStart" layoutX="203.0" layoutY="53.0" />
+            <Label layoutX="365.0" layoutY="57.0" text="End">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="constantTankLeakageDateEnd" layoutX="395.0" layoutY="53.0" />
+            <Label layoutX="597.0" layoutY="57.0" text="Leakage (l/h)">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="constantTankLeakageValue" layoutX="688.0" layoutY="53.0" prefHeight="25.0" prefWidth="76.0" />
+            <Label layoutX="159.0" layoutY="110.0" text="Start">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField layoutX="203.0" layoutY="104.0" />
+            <Label layoutX="365.0" layoutY="110.0" text="End">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField layoutX="395.0" layoutY="105.0" />
+            <Label layoutX="597.0" layoutY="110.0" text="Leakage (l/h)">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField layoutX="688.0" layoutY="105.0" prefHeight="25.0" prefWidth="76.0" />
+         </children>
+      </AnchorPane>
+      <Button defaultButton="true" layoutX="336.0" layoutY="559.0" mnemonicParsing="false" onAction="#handleStartApplication" text="Run Applicators">
+         <font>
+            <Font name="Consolas" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
