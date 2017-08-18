@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package petrolanomaliesapplicator.datatypes;
+package petrolanomaliesapplicator.model;
 
 import java.time.LocalDateTime;
 
@@ -30,6 +30,16 @@ public class NozzleMeasure {
         this.status = status;
     }
 
+    public NozzleMeasure copy(){
+        return new NozzleMeasure(this.getDateTime(),
+            this.getLocationId(),
+            this.getGunId(),
+            this.getTankId(),
+            this.getLiterCounter(),
+            this.getTotalCounter(),
+            this.getStatus());
+    }
+    
     @Override
     public String toString() {
         return "NozzleMeasure{" + "dateTime=" + dateTime + ", locationId=" + locationId + ", gunId=" + gunId + ", tankId=" + tankId + ", literCounter=" + literCounter + ", totalCounter=" + totalCounter + ", status=" + status + '}';
