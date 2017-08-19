@@ -21,7 +21,7 @@ public class MeterMiscalibrationApplicator {
             Integer tankId, Integer gunId, LocalDateTime startTime, LocalDateTime endTime, Double miscalibrationCoefficientPerOneCubicMeter) {
 
         Collection<NozzleMeasure> modifiedNozzleMeasures = new ArrayList<NozzleMeasure>();
-        Double previousTotalCounter = 0.0;
+        Double previousTotalCounter = null;
         Double totalMeasurementError = 0.0;
       
         for (NozzleMeasure nozzleMeasure : nozzleMeasures) {
@@ -32,11 +32,16 @@ public class MeterMiscalibrationApplicator {
                     || (nozzleMeasure.getDateTime().isAfter(startTime) && nozzleMeasure.getDateTime().isBefore(endTime)))) {
 
                 NozzleMeasure modifiedNozzleMeasure = nozzleMeasure.copy();
-                Double measurementError = calculateNozzleMeasurementError(previousTotalCounter, nozzleMeasure.getTotalCounter(), miscalibrationCoefficientPerOneCubicMeter);
-                modifiedNozzleMeasure.setTotalCounter(nozzleMeasure.getTotalCounter() + measurementError);
+                
+                Double measurementErrorForTotalCounter = calculateNozzleMeasurementError(previousTotalCounter, nozzleMeasure.getTotalCounter(), miscalibrationCoefficientPerOneCubicMeter);
+                modifiedNozzleMeasure.setTotalCounter(nozzleMeasure.getTotalCounter() + measurementErrorForTotalCounter + totalMeasurementError);
+                
+                Double measurementErrorForLiterCounter = calculateNozzleMeasurementError(0.0, nozzleMeasure.getLiterCounter(), miscalibrationCoefficientPerOneCubicMeter);
+                modifiedNozzleMeasure.setLiterCounter(nozzleMeasure.getLiterCounter() + measurementErrorForLiterCounter);
+                
                 modifiedNozzleMeasures.add(modifiedNozzleMeasure);
                 
-                totalMeasurementError += measurementError;
+                totalMeasurementError += measurementErrorForTotalCounter;
                 previousTotalCounter = nozzleMeasure.getTotalCounter();
 
             } else if (nozzleMeasure.getTankId().equals(tankId) 
@@ -56,14 +61,13 @@ public class MeterMiscalibrationApplicator {
     
     private static Double calculateNozzleMeasurementError(Double totalCounter, 
             Double nextTotalCounter, Double miscalibrationCoefficientPerOneCubicMeter){
+        
         if(totalCounter == null || nextTotalCounter == null || miscalibrationCoefficientPerOneCubicMeter == null)
             return 0.0;
+        
         Double totalCounterDifference = nextTotalCounter - totalCounter;      
         return totalCounterDifference < 0 ? 0.0 : totalCounterDifference * miscalibrationCoefficientPerOneCubicMeter;
-        
-        
-        
-        
+               
     }
 
 }
