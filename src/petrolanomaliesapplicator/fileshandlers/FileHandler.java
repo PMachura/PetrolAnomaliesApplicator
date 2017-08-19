@@ -101,13 +101,31 @@ public class FileHandler {
         return null;
     }
 
-    public static void saveDataToFile(Collection<?> dataCollection, String fileName) {
+    public static void saveNozzleMeasuresToFile(Collection<NozzleMeasure> dataCollection, String fileName) {
+        try {
+            NozzleMeasureFileHandler.saveData((Collection<NozzleMeasure>) dataCollection, fileName);
+        } catch (IOException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static void saveTankMeasuresToFile(Collection<TankMeasure> dataCollection, String fileName) {
         try {
             TankMeasureFileHandler.saveData((Collection<TankMeasure>) dataCollection, fileName);
         } catch (IOException ex) {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void saveRefuelMeasuresToFile(Collection<RefuelMeasure> dataCollection, String fileName) {
+        try {
+            RefuelMeasureFileHandler.saveData((Collection<RefuelMeasure>) dataCollection, fileName);
+        } catch (IOException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
 
     private static void writeValueToFile(String value, BufferedWriter bufferedWriter) throws IOException {
         if (value != null) {
@@ -212,6 +230,40 @@ public class FileHandler {
 
     private static class NozzleMeasureFileHandler {
 
+        public static void saveData(Collection<NozzleMeasure> nozzleMeasures, String fileName) throws IOException {
+
+            File file = new File(fileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+
+            nozzleMeasures.forEach((NozzleMeasure nozzleMeasure) -> {
+
+                try {
+                    writeValueToFile(nozzleMeasure.getDateTime(), bufferedWriter);
+                    writeSemicolonToFile(bufferedWriter);
+                    writeValueToFile(nozzleMeasure.getLocationId(), bufferedWriter);
+                    writeSemicolonToFile(bufferedWriter);
+                    writeValueToFile(nozzleMeasure.getGunId(), bufferedWriter);
+                    writeSemicolonToFile(bufferedWriter);                   
+                    writeValueToFile(nozzleMeasure.getTankId(), bufferedWriter);
+                    writeSemicolonToFile(bufferedWriter);
+                    writeValueToFile(nozzleMeasure.getLiterCounter(), bufferedWriter);
+                    writeSemicolonToFile(bufferedWriter);
+                    writeValueToFile(nozzleMeasure.getTotalCounter(), bufferedWriter);
+                    writeSemicolonToFile(bufferedWriter);
+                    writeValueToFile(nozzleMeasure.getStatus(), bufferedWriter);
+
+                    bufferedWriter.newLine();
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+            );
+
+            bufferedWriter.close();
+        }
+        
         public static Collection<NozzleMeasure> loadData(String fileName) throws FileNotFoundException, IOException, ParseException {
 
             file = new File(fileName);
@@ -250,6 +302,34 @@ public class FileHandler {
 
     private static class RefuelMeasureFileHandler {
 
+        public static void saveData(Collection<RefuelMeasure> refuelMeasures, String fileName) throws IOException {
+
+            File file = new File(fileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+
+            refuelMeasures.forEach((RefuelMeasure refuelMeasure) -> {
+
+                try {
+                    writeValueToFile(refuelMeasure.getDateTime(), bufferedWriter);
+                    writeSemicolonToFile(bufferedWriter);
+                    writeValueToFile(refuelMeasure.getTankId(), bufferedWriter);
+                    writeSemicolonToFile(bufferedWriter);
+                    writeValueToFile(refuelMeasure.getCisternPetrolVolume(), bufferedWriter);
+                    writeSemicolonToFile(bufferedWriter);                   
+                    writeValueToFile(refuelMeasure.getRefuelingSpeed(), bufferedWriter);
+                    
+                    bufferedWriter.newLine();
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+            );
+
+            bufferedWriter.close();
+        }
+        
         public static Collection<RefuelMeasure> loadData(String fileName) throws FileNotFoundException, IOException, ParseException {
 
             file = new File(fileName);
