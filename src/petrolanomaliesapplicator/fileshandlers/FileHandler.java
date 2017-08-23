@@ -27,6 +27,12 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import petrolanomaliesapplicator.anomaliesapplicators.AnomalyConfigurator;
+import petrolanomaliesapplicator.anomaliesapplicators.AnomalyConfiguratorCollector;
+import petrolanomaliesapplicator.anomaliesapplicators.AnomalyType;
+import petrolanomaliesapplicator.anomaliesapplicators.LeakageConfigurator;
+import petrolanomaliesapplicator.anomaliesapplicators.MeterMiscalibrationConfigurator;
+import petrolanomaliesapplicator.anomaliesapplicators.ProbeHangConfigurator;
 
 import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.RefuelMeasure;
@@ -108,7 +114,7 @@ public class FileHandler {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static void saveTankMeasuresToFile(Collection<TankMeasure> dataCollection, String fileName) {
         try {
             TankMeasureFileHandler.saveData((Collection<TankMeasure>) dataCollection, fileName);
@@ -116,7 +122,7 @@ public class FileHandler {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static void saveRefuelMeasuresToFile(Collection<RefuelMeasure> dataCollection, String fileName) {
         try {
             RefuelMeasureFileHandler.saveData((Collection<RefuelMeasure>) dataCollection, fileName);
@@ -124,8 +130,6 @@ public class FileHandler {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
 
     private static void writeValueToFile(String value, BufferedWriter bufferedWriter) throws IOException {
         if (value != null) {
@@ -134,7 +138,7 @@ public class FileHandler {
     }
 
     private static void writeValueToFile(Double value, BufferedWriter bufferedWriter) throws IOException {
-        if (value != null) {           
+        if (value != null) {
             bufferedWriter.write(decimalFormat.format(value));
         }
     }
@@ -153,6 +157,23 @@ public class FileHandler {
 
     private static void writeSemicolonToFile(BufferedWriter bufferedWriter) throws IOException {
         bufferedWriter.write(";");
+    }
+    
+    private static LocalDateTime toDate(String date){
+        return (date == null || date.isEmpty()) ? null : LocalDateTime.parse(date, dateTimeFormatter);
+    }
+    
+    private static Double toDouble(String value){
+        try {
+            return (value == null || value.isEmpty()) ? null : numberFormat.parse(value).doubleValue();
+        } catch (ParseException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0.0;
+    }
+    
+    private static Integer toInteger(String value){
+        return (value == null || value.isEmpty()) ? null : Integer.parseInt(value);
     }
 
     private static class TankMeasureFileHandler {
@@ -189,7 +210,7 @@ public class FileHandler {
                     writeValueToFile(tankMeasure.getLocationId(), bufferedWriter);
                     writeSemicolonToFile(bufferedWriter);
                     writeValueToFile(tankMeasure.getMeterId(), bufferedWriter);
-                    writeSemicolonToFile(bufferedWriter);                   
+                    writeSemicolonToFile(bufferedWriter);
                     writeValueToFile(tankMeasure.getTankId(), bufferedWriter);
                     writeSemicolonToFile(bufferedWriter);
                     writeValueToFile(tankMeasure.getFuelHeight(), bufferedWriter);
@@ -199,7 +220,7 @@ public class FileHandler {
                     writeValueToFile(tankMeasure.getFuelTemperature(), bufferedWriter);
 
                     bufferedWriter.newLine();
-                    
+
                 } catch (IOException ex) {
                     Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -213,13 +234,13 @@ public class FileHandler {
         private static TankMeasure initializeTankMeasureFromStringFieldsList(String[] fields) throws ParseException {
 
             TankMeasure tankMeasure = new TankMeasure(
-                    fields[0].isEmpty() ? null : LocalDateTime.parse(fields[0], dateTimeFormatter),
+                    toDate(fields[0]),
                     null,
                     null,
-                    fields[3].isEmpty() ? null : Integer.parseInt(fields[3]),
-                    fields[4].isEmpty() ? null : numberFormat.parse(fields[4]).doubleValue(),
-                    fields[5].isEmpty() ? null : numberFormat.parse(fields[5]).doubleValue(),
-                    fields[6].isEmpty() ? null : numberFormat.parse(fields[6]).doubleValue(),
+                    toInteger(fields[3]),
+                    toDouble(fields[4]),
+                    toDouble(fields[5]),
+                    toDouble(fields[6]),
                     0.0,
                     0.0
             );
@@ -243,7 +264,7 @@ public class FileHandler {
                     writeValueToFile(nozzleMeasure.getLocationId(), bufferedWriter);
                     writeSemicolonToFile(bufferedWriter);
                     writeValueToFile(nozzleMeasure.getGunId(), bufferedWriter);
-                    writeSemicolonToFile(bufferedWriter);                   
+                    writeSemicolonToFile(bufferedWriter);
                     writeValueToFile(nozzleMeasure.getTankId(), bufferedWriter);
                     writeSemicolonToFile(bufferedWriter);
                     writeValueToFile(nozzleMeasure.getLiterCounter(), bufferedWriter);
@@ -253,7 +274,7 @@ public class FileHandler {
                     writeValueToFile(nozzleMeasure.getStatus(), bufferedWriter);
 
                     bufferedWriter.newLine();
-                    
+
                 } catch (IOException ex) {
                     Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -263,7 +284,7 @@ public class FileHandler {
 
             bufferedWriter.close();
         }
-        
+
         public static Collection<NozzleMeasure> loadData(String fileName) throws FileNotFoundException, IOException, ParseException {
 
             file = new File(fileName);
@@ -287,13 +308,13 @@ public class FileHandler {
         private static NozzleMeasure initializeNozzleMeasureFromStringFieldsList(String[] fields) throws ParseException {
 
             NozzleMeasure nozzleMeasure = new NozzleMeasure(
-                    fields[0].isEmpty() ? null : LocalDateTime.parse(fields[0], dateTimeFormatter),
+                    toDate(fields[0]),
                     null,
-                    fields[2].isEmpty() ? null : Integer.parseInt(fields[2]),
-                    fields[3].isEmpty() ? null : Integer.parseInt(fields[3]),
-                    fields[4].isEmpty() ? null : numberFormat.parse(fields[4]).doubleValue(),
-                    fields[5].isEmpty() ? null : numberFormat.parse(fields[5]).doubleValue(),
-                    fields[6].isEmpty() ? null : Integer.parseInt(fields[6])
+                    toInteger(fields[2]),
+                    toInteger(fields[3]),
+                    toDouble(fields[4]),
+                    toDouble(fields[5]),
+                    toInteger(fields[6])
             );
 
             return nozzleMeasure;
@@ -315,11 +336,11 @@ public class FileHandler {
                     writeValueToFile(refuelMeasure.getTankId(), bufferedWriter);
                     writeSemicolonToFile(bufferedWriter);
                     writeValueToFile(refuelMeasure.getCisternPetrolVolume(), bufferedWriter);
-                    writeSemicolonToFile(bufferedWriter);                   
+                    writeSemicolonToFile(bufferedWriter);
                     writeValueToFile(refuelMeasure.getRefuelingSpeed(), bufferedWriter);
-                    
+
                     bufferedWriter.newLine();
-                    
+
                 } catch (IOException ex) {
                     Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -329,7 +350,7 @@ public class FileHandler {
 
             bufferedWriter.close();
         }
-        
+
         public static Collection<RefuelMeasure> loadData(String fileName) throws FileNotFoundException, IOException, ParseException {
 
             file = new File(fileName);
@@ -353,10 +374,10 @@ public class FileHandler {
         private static RefuelMeasure initializeRefuelMeasureFromStringFieldsList(String[] fields) throws ParseException {
 
             RefuelMeasure refuelMeasure = new RefuelMeasure(
-                    fields[0].isEmpty() ? null : LocalDateTime.parse(fields[0], dateTimeFormatter),
-                    fields[1].isEmpty() ? null : Integer.parseInt(fields[1]),
-                    fields[2].isEmpty() ? null : numberFormat.parse(fields[2]).doubleValue(),
-                    fields[3].isEmpty() ? null : numberFormat.parse(fields[3]).doubleValue()
+                    toDate(fields[0]),
+                    toInteger(fields[1]),
+                    toDouble(fields[2]),
+                    toDouble(fields[3])
             );
 
             return refuelMeasure;
@@ -382,7 +403,7 @@ public class FileHandler {
             line = bufferedReader.readLine(); //Because first row contains strings- attribute names
             while ((line = bufferedReader.readLine()) != null) {
                 String[] fields = line.split(";");
-                mapper.put(numberFormat.parse(fields[0]).doubleValue(), numberFormat.parse(fields[1]).doubleValue());
+                mapper.put(toDouble(fields[0]), toDouble(fields[1]));
             }
 
             bufferedReader.close();
@@ -406,43 +427,45 @@ public class FileHandler {
         }
     }
 
-    private static class UniversalFileSaver {
+    private static class AnomalyConfiguratorFileHandler {
 
-        private static Object[] getFieldsValues(Object data) throws IllegalArgumentException, IllegalAccessException {
+        
+        public static AnomalyConfiguratorCollector loadConfigurators(String fileName) throws FileNotFoundException, IOException, ParseException {
 
-            Field[] fields = data.getClass().getDeclaredFields();
-            Object[] fieldsValues = new Object[fields.length];
+            file = new File(fileName);
+            fileInputStream = new FileInputStream(file);
+            bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
-            for (int i = 0; i < fields.length; i++) {
-                fields[i].setAccessible(true);
-                fieldsValues[i] = fields[i].get(data);
+            String line;
+            String anomalyDescriptor;
+            AnomalyConfiguratorCollector anomalyConfiguratorCollector = new AnomalyConfiguratorCollector();
+            AnomalyType[] anomalyTypes = AnomalyType.values();
+            AnomalyConfigurator anomalyConfigurator;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] dataSets = line.split(";");
+                anomalyConfiguratorCollector.addDataSetsNames(dataSets);
+                while ((anomalyDescriptor = bufferedReader.readLine()) != null) {
+                    String [] anomalyParameters = anomalyDescriptor.split(";");
+                    switch (anomalyParameters[0]) {
+                        case ("MeterMiscalibration"):
+                            anomalyConfigurator = new MeterMiscalibrationConfigurator();
+                        case ("ProbeHang"):
+                            anomalyConfigurator = new ProbeHangConfigurator();
+                        case ("ConstantLeakage"):
+                            anomalyConfigurator = new LeakageConfigurator();
+                        case ("VariableLeakage"):
+                            anomalyConfigurator = new LeakageConfigurator();
+                        case ("PipelineLeakage"):
+                            anomalyConfigurator = new LeakageConfigurator();
+
+                    }
+                }
             }
 
-            return fieldsValues;
-
-        }
-
-        public static void saveDataToFile(Collection<?> dataCollection, String fileName) throws IllegalArgumentException, IllegalAccessException, IOException {
-
-            FileOutputStream fileOutputStream = new FileOutputStream(new File(fileName));
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-            for (Object data : dataCollection) {
-                objectOutputStream.writeObject(data);
-//                Object[] fieldValues = getFieldsValues(data);
-//                for (Object fieldValue : fieldValues) {
-//                    if (fieldValue != null) {
-//                        System.out.println(fieldValue);
-//                        objectOutputStream.writeObject(fieldValue);
-//                    }
-//                    objectOutputStream.writeChars(";");
-//                }
-
-            }
-
-            objectOutputStream.close();
-            fileOutputStream.close();
-
+            bufferedReader.close();
+            fileInputStream.close();
+            return anomalyConfiguratorCollector;
         }
     }
 }

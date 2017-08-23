@@ -17,9 +17,20 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import petrolanomaliesapplicator.anomaliesapplicators.TankLeakageApplicator;
+import java.util.Hashtable;
+import java.util.Set;
+import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.data.DataSet;
+import org.neuroph.core.data.DataSetRow;
+import org.neuroph.core.learning.IterativeLearning;
+import org.neuroph.core.learning.LearningRule;
+import org.neuroph.nnet.MultiLayerPerceptron;
+import org.neuroph.util.TransferFunctionType;
+import petrolanomaliesapplicator.anomaliesapplicators.LeakageApplicator;
 import petrolanomaliesapplicator.anomaliesapplicators.ProbeHangApplicator;
+import petrolanomaliesapplicator.model.HeightVolumeMapper;
 import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.RefuelMeasure;
 import petrolanomaliesapplicator.model.TankMeasure;
@@ -30,30 +41,46 @@ import petrolanomaliesapplicator.model.TankMeasure;
  */
 public class Test {
 
-
+  
+    
     public static void main(String[] args) throws FileNotFoundException, ParseException, IOException {
-        
+
         ArrayList<TankMeasure> tankMeasures = (ArrayList<TankMeasure>) FileHandler.loadTankMeasures("dane/Zestaw 1/tankMeasures.log");
         ArrayList<NozzleMeasure> nozzleMeasures = (ArrayList<NozzleMeasure>) FileHandler.loadNozzleMeasures("dane/Zestaw 1/nozzleMeasures.log");
         ArrayList<RefuelMeasure> refuelMeasures = (ArrayList<RefuelMeasure>) FileHandler.loadRefuelMeasures("dane/Zestaw 1/refuel.log");
+        HeightVolumeMapper hightVolumeMapper = new HeightVolumeMapper(FileHandler.loadHightVolumeMappers());
+        Hashtable<Double, Double> firstTankHightVolumeMapper = hightVolumeMapper.getNormalizedMapperForTank(1);
+
+        DataSet trainingSet = new DataSet(1, 1);
+        Set<Double> keys = firstTankHightVolumeMapper.keySet();
+        keys.forEach((Double key) -> {
+            trainingSet.addRow(new DataSetRow(new double[]{key}, new double[]{firstTankHightVolumeMapper.get(key)}));
+        });
         
-        ArrayList<TankMeasure> tankMeasuresList = new ArrayList<TankMeasure>();
-        tankMeasuresList.add(tankMeasures.get(0));
-        tankMeasuresList.add(tankMeasures.get(1));
+
+        for (DataSetRow dataRow : trainingSet.getRows()) {
+              System.out.println("Input " + Arrays.toString(dataRow.getInput()) + " Output " + Arrays.toString(dataRow.getDesiredOutput()));
+        }
+
+        System.out.println("Hello");  
+        MultiLayerPerceptron multiLayerPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 1,3,3,3, 1);
+        multiLayerPerceptron.getLearningRule().setMaxError(0.0001);
+        multiLayerPerceptron.getLearningRule().setMaxIterations(10000);
+        multiLayerPerceptron.getLearningRule().setLearningRate(0.7);
         
-       // FileHandler.saveTankMeasuresToFile(tankMeasuresList, "saveTest.txt");
-       // FileHandler.saveNozzleMeasuresToFile(nozzleMeasures, "saveTest.txt");
-       FileHandler.saveRefuelMeasuresToFile(refuelMeasures, "saveTest.txt");
-        //    Collection<TankMeasure> editedTankMeasures = TankLeakageApplicator.applyVariableLeakage(tankMeasures, 1, LocalDateTime.of(2014, 1, 7, 23, 0, 0), LocalDateTime.of(2014, 1, 7, 23, 45, 0), 0.0);
-//        editedTankMeasures.forEach((TankMeasure tankMeasure) -> {
-//            if (tankMeasure.getTankId() == 1) {
-//                System.out.println(tankMeasure);
-//            }
-//        });
-        //    FileHandler.loadNozzleMeasures("dane/Zestaw 1/nozzleMeasures.log");
-        //    FileHandler.loadRefuelMeasures("dane/Zestaw 1/refuel.log");
-        //    FileHandler.loadHeightVolumeMapper("dane/mapowanie/Tank1_10012.csv");
-        //   HeightVolumeMapper hightVolumeMapper = new HeightVolumeMapper(FileHandler.loadHightVolumeMappers());
+        System.out.println("Hello");
+        multiLayerPerceptron.learn(trainingSet);
+        
+        System.out.println("Hello");
+        for (DataSetRow dataRow : trainingSet.getRows()) {
+            multiLayerPerceptron.setInput(dataRow.getInput());
+            multiLayerPerceptron.calculate();
+            double[] output = multiLayerPerceptron.getOutput().clone();
+            System.out.print("Input " + Arrays.toString(hightVolumeMapper.denormalizeKeys(1,dataRow.getInput())) + " ");
+            System.out.print("Desired Output " + Arrays.toString(hightVolumeMapper.denormalizeValues(1, dataRow.getDesiredOutput())) + " ");
+            System.out.println("Output " + Arrays.toString(hightVolumeMapper.denormalizeValues(1,output)));
+        }
+
     }
 
 }

@@ -16,7 +16,7 @@ import petrolanomaliesapplicator.model.TankMeasure;
  *
  * @author Przemek
  */
-public class TankLeakageApplicator {
+public class LeakageApplicator {
 
     /**
      * Applys constant leakage to given TankMeasure collection Modifies only
@@ -29,7 +29,7 @@ public class TankLeakageApplicator {
      * @param leakageVolumePerHour
      * @return
      */
-    public static Collection<TankMeasure> applyConstantLeakage(Collection<TankMeasure> tankMeasures,
+    public static Collection<TankMeasure> applyConstantTankLeakage(Collection<TankMeasure> tankMeasures,
             Integer tankId, LocalDateTime startTime, LocalDateTime endTime, Double leakageVolumePerHour) {
 
         Collection<TankMeasure> modifiedTankMeasures = new ArrayList<TankMeasure>();
@@ -68,7 +68,7 @@ public class TankLeakageApplicator {
      * @param leakageVolumePerHour
      * @return 
      */
-    public static Collection<TankMeasure> applyVariableLeakage(Collection<TankMeasure> tankMeasures,
+    public static Collection<TankMeasure> applyVariableTankLeakage(Collection<TankMeasure> tankMeasures,
             Integer tankId, LocalDateTime startTime, LocalDateTime endTime, Double leakingPointHeight) {
 
         
