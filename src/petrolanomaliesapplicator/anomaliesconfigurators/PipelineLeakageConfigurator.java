@@ -16,8 +16,9 @@ public class PipelineLeakageConfigurator extends AnomalyConfigurator {
     private Double leakingPointHeight;
     private Integer tankId;
 
-    public PipelineLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, AnomalyType anomalyTpe, Double leakageVolumePerHour, Double leakingPointHeight, Integer tankId) {
-        super(startDateTime, endDateTime, anomalyTpe);
+    public PipelineLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime,  Double leakageVolumePerHour, Double leakingPointHeight, Integer tankId) {
+        super(startDateTime, endDateTime);
+        this.anomalyTpe = AnomalyType.PIPELINE_LEAKAGE;
         this.leakageVolumePerHour = leakageVolumePerHour;
         this.leakingPointHeight = leakingPointHeight;
         this.tankId = tankId;

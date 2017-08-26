@@ -15,8 +15,9 @@ public class ConstantLeakageConfigurator extends AnomalyConfigurator {
     private Integer tankId;
     private Double leakageVolumePerHour;
 
-    public ConstantLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, AnomalyType anomalyTpe, Integer tankId, Double leakageVolumePerHour) {
-        super(startDateTime, endDateTime, anomalyTpe);
+    public ConstantLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer tankId, Double leakageVolumePerHour) {
+        super(startDateTime, endDateTime);
+        this.anomalyTpe = AnomalyType.CONSTANT_LEAKAGE;
         this.tankId = tankId;
         this.leakageVolumePerHour = leakageVolumePerHour;
     }

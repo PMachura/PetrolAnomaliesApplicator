@@ -14,8 +14,9 @@ import java.time.LocalDateTime;
 public class ProbeHangConfigurator extends AnomalyConfigurator {
     private Integer tankId;
 
-    public ProbeHangConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, AnomalyType anomalyTpe, Integer tankId) {
-        super(startDateTime, endDateTime, anomalyTpe);
+    public ProbeHangConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer tankId) {
+        super(startDateTime, endDateTime);
+        this.anomalyTpe = AnomalyType.PROBE_HANG;
         this.tankId = tankId;
     }
 

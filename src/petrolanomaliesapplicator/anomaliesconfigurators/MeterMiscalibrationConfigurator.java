@@ -17,8 +17,9 @@ public class MeterMiscalibrationConfigurator extends AnomalyConfigurator{
     private Integer gunId;
     private Double miscalibrationCoefficientPerOneCubicMeter;
 
-    public MeterMiscalibrationConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, AnomalyType anomalyTpe, Integer tankiId, Integer gunId, Double miscalibrationCoefficientPerOneCubicMeter) {
-        super(startDateTime, endDateTime, anomalyTpe);
+    public MeterMiscalibrationConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer tankiId, Integer gunId, Double miscalibrationCoefficientPerOneCubicMeter) {
+        super(startDateTime, endDateTime);
+        this.anomalyTpe = AnomalyType.METER_MISCALIBRATION;
         this.tankId = tankiId;
         this.gunId = gunId;
         this.miscalibrationCoefficientPerOneCubicMeter = miscalibrationCoefficientPerOneCubicMeter;

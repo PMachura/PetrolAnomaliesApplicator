@@ -456,23 +456,23 @@ public class FileHandler {
 
         private static MeterMiscalibrationConfigurator initializeMeterMiscalibrationConfigurator(String[] params) {
             return new MeterMiscalibrationConfigurator(toDate(params[1]), toDate(params[2]),
-                    AnomalyType.METER_MISCALIBRATION, toInteger(params[3]), toInteger(params[4]),
+                    toInteger(params[3]), toInteger(params[4]),
                     toDouble(params[5]));
         }
 
         private static ProbeHangConfigurator initializeProbeHangConfigurator(String[] params) {
             return new ProbeHangConfigurator(toDate(params[1]), toDate(params[2]),
-                    AnomalyType.PROBE_HANG, toInteger(params[3]));
+                    toInteger(params[3]));
         }
 
         private static ConstantLeakageConfigurator initializeConstantLeakageConfigurator(String[] params) {
             return new ConstantLeakageConfigurator(toDate(params[1]), toDate(params[2]),
-                    AnomalyType.CONSTANT_LEAKAGE, toInteger(params[3]), toDouble(params[4]));
+                    toInteger(params[3]), toDouble(params[4]));
         }
 
         private static VariableLeakageConfigurator initializeVariableLeakageConfigurator(String[] params) {
             return new VariableLeakageConfigurator(toDate(params[1]), toDate(params[2]),
-                    AnomalyType.VARIABLE_LEAKAGE, toInteger(params[3]), toDouble(params[4]));
+                    toInteger(params[3]), toDouble(params[4]));
         }
 
         private static void saveBasicConfigurator(AnomalyConfigurator anomalyConfigurator, BufferedWriter bufferedWriter) throws IOException {
@@ -589,7 +589,7 @@ public class FileHandler {
                 bufferedWriter.newLine();
 
                 for (AnomalyConfigurator anomalyConfigurator : anomalyConfiguratorCollector.getAnomaliesConfigurators()) {
-                   
+
                     switch (anomalyConfigurator.getAnomalyTpe()) {
 
                         case CONSTANT_LEAKAGE: {
@@ -597,25 +597,25 @@ public class FileHandler {
                             break;
                         }
 
-                        case METER_MISCALIBRATION:{
+                        case METER_MISCALIBRATION: {
                             saveMeterMiscalibrationConfigurator((MeterMiscalibrationConfigurator) anomalyConfigurator, bufferedWriter);
                             break;
                         }
-                            
-                        case PIPELINE_LEAKAGE:{
+
+                        case PIPELINE_LEAKAGE: {
                             break;
                         }
 
-                        case PROBE_HANG:{
+                        case PROBE_HANG: {
                             saveProbeHangConfigurator((ProbeHangConfigurator) anomalyConfigurator, bufferedWriter);
                             break;
                         }
-                            
-                        case VARIABLE_LEAKAGE:{
+
+                        case VARIABLE_LEAKAGE: {
                             saveVariableLeakageConfigurator((VariableLeakageConfigurator) anomalyConfigurator, bufferedWriter);
                             break;
                         }
-                            
+
                     }
 
                     bufferedWriter.newLine();

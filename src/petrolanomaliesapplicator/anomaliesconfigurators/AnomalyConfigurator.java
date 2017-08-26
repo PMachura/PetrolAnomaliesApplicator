@@ -10,14 +10,13 @@ import java.time.LocalDateTime;
 
 
 public abstract class AnomalyConfigurator {
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
-    private AnomalyType anomalyTpe;
+    protected LocalDateTime startDateTime;
+    protected LocalDateTime endDateTime;
+    protected AnomalyType anomalyTpe;
 
-    public AnomalyConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, AnomalyType anomalyTpe) {
+    public AnomalyConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.anomalyTpe = anomalyTpe;
     }
 
     public LocalDateTime getStartDateTime() {

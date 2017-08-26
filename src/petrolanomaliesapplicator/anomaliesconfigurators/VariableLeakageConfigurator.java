@@ -15,8 +15,9 @@ public class VariableLeakageConfigurator extends AnomalyConfigurator{
     private Integer tankId;
     private Double leakingPointHeight;
 
-    public VariableLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, AnomalyType anomalyTpe,Integer tankId, Double leakingPointHeight) {
-        super(startDateTime, endDateTime, anomalyTpe);
+    public VariableLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime,Integer tankId, Double leakingPointHeight) {
+        super(startDateTime, endDateTime);
+        this.anomalyTpe = AnomalyType.VARIABLE_LEAKAGE;
         this.tankId = tankId;
         this.leakingPointHeight = leakingPointHeight;
     }
