@@ -3,16 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/Test.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/fileshandlers/FileHandler.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/TankLeakageApplicator.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/NozzleMeasure.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/JavaTest.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/HeightVolumeMapper.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/MeterMiscalibrationApplicator.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/ProbeHangApplicator.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/TankMeasure.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/RefuelMeasure.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/NeuralNetworkTest.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/FuelHeightVolumeMapper.java</file>
         </group>
     </open-files>
 </project-private>

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package petrolanomaliesapplicator.anomaliesapplicators;
+package petrolanomaliesapplicator.anomaliesconfigurators;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +15,8 @@ import java.util.Collection;
  */
 public class AnomalyConfiguratorCollector {
     
-    private Collection <AnomalyConfigurator> anomaliesConfigurators;
-    private ArrayList <String> dataSetsNames;
+    private Collection <AnomalyConfigurator> anomaliesConfigurators = new ArrayList<AnomalyConfigurator>();
+    private ArrayList <String> dataSetsNames = new ArrayList<String>();
     
     public void addDataSetsNames(String [] dataSetsNames){
         this.dataSetsNames.addAll(Arrays.asList(dataSetsNames));
@@ -32,6 +32,10 @@ public class AnomalyConfiguratorCollector {
 
     public void setAnomaliesConfigurators(Collection<AnomalyConfigurator> anomaliesConfigurators) {
         this.anomaliesConfigurators = anomaliesConfigurators;
+    }
+
+    public ArrayList<String> getDataSetsNames() {
+        return dataSetsNames;
     }
 
  

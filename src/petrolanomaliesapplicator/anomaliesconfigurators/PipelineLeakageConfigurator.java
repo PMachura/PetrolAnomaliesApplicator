@@ -3,17 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package petrolanomaliesapplicator.anomaliesapplicators;
+package petrolanomaliesapplicator.anomaliesconfigurators;
+
+import java.time.LocalDateTime;
 
 /**
  *
  * @author Przemek
  */
-public class LeakageConfigurator extends AnomalyConfigurator {
+public class PipelineLeakageConfigurator extends AnomalyConfigurator {
     private Double leakageVolumePerHour;
     private Double leakingPointHeight;
     private Integer tankId;
 
+    public PipelineLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, AnomalyType anomalyTpe, Double leakageVolumePerHour, Double leakingPointHeight, Integer tankId) {
+        super(startDateTime, endDateTime, anomalyTpe);
+        this.leakageVolumePerHour = leakageVolumePerHour;
+        this.leakingPointHeight = leakingPointHeight;
+        this.tankId = tankId;
+    }
+
+    
+    
     public Double getLeakageVolumePerHour() {
         return leakageVolumePerHour;
     }

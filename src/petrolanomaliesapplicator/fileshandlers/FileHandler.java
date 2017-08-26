@@ -27,12 +27,14 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import petrolanomaliesapplicator.anomaliesapplicators.AnomalyConfigurator;
-import petrolanomaliesapplicator.anomaliesapplicators.AnomalyConfiguratorCollector;
-import petrolanomaliesapplicator.anomaliesapplicators.AnomalyType;
-import petrolanomaliesapplicator.anomaliesapplicators.LeakageConfigurator;
-import petrolanomaliesapplicator.anomaliesapplicators.MeterMiscalibrationConfigurator;
-import petrolanomaliesapplicator.anomaliesapplicators.ProbeHangConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfiguratorCollector;
+import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyType;
+import petrolanomaliesapplicator.anomaliesconfigurators.ConstantLeakageConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.PipelineLeakageConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.MeterMiscalibrationConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.ProbeHangConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.VariableLeakageConfigurator;
 
 import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.RefuelMeasure;
@@ -131,6 +133,26 @@ public class FileHandler {
         }
     }
 
+    public static Collection<AnomalyConfiguratorCollector> loadAnomalyConfigurators(String fileName) {
+        try {
+            return AnomalyConfiguratorFileHandler.loadConfigurators(fileName);
+        } catch (IOException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    public static void saveAnomalyConfiguratorCollectorCollection(String fileName, Collection<AnomalyConfiguratorCollector> anomalyConfiguratorCollection) {
+        try {
+            AnomalyConfiguratorFileHandler.saveConfigurators(fileName, (ArrayList<AnomalyConfiguratorCollector>) anomalyConfiguratorCollection);
+        } catch (IOException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private static void writeValueToFile(String value, BufferedWriter bufferedWriter) throws IOException {
         if (value != null) {
             bufferedWriter.write(value);
@@ -158,12 +180,12 @@ public class FileHandler {
     private static void writeSemicolonToFile(BufferedWriter bufferedWriter) throws IOException {
         bufferedWriter.write(";");
     }
-    
-    private static LocalDateTime toDate(String date){
+
+    private static LocalDateTime toDate(String date) {
         return (date == null || date.isEmpty()) ? null : LocalDateTime.parse(date, dateTimeFormatter);
     }
-    
-    private static Double toDouble(String value){
+
+    private static Double toDouble(String value) {
         try {
             return (value == null || value.isEmpty()) ? null : numberFormat.parse(value).doubleValue();
         } catch (ParseException ex) {
@@ -171,8 +193,8 @@ public class FileHandler {
         }
         return 0.0;
     }
-    
-    private static Integer toInteger(String value){
+
+    private static Integer toInteger(String value) {
         return (value == null || value.isEmpty()) ? null : Integer.parseInt(value);
     }
 
@@ -429,43 +451,181 @@ public class FileHandler {
 
     private static class AnomalyConfiguratorFileHandler {
 
-        
-        public static AnomalyConfiguratorCollector loadConfigurators(String fileName) throws FileNotFoundException, IOException, ParseException {
+        private static final String endSingInFileForDataSetsConfigurators = "----------------------------------";
+        private static final String endFileSign = "END";
+
+        private static MeterMiscalibrationConfigurator initializeMeterMiscalibrationConfigurator(String[] params) {
+            return new MeterMiscalibrationConfigurator(toDate(params[1]), toDate(params[2]),
+                    AnomalyType.METER_MISCALIBRATION, toInteger(params[3]), toInteger(params[4]),
+                    toDouble(params[5]));
+        }
+
+        private static ProbeHangConfigurator initializeProbeHangConfigurator(String[] params) {
+            return new ProbeHangConfigurator(toDate(params[1]), toDate(params[2]),
+                    AnomalyType.PROBE_HANG, toInteger(params[3]));
+        }
+
+        private static ConstantLeakageConfigurator initializeConstantLeakageConfigurator(String[] params) {
+            return new ConstantLeakageConfigurator(toDate(params[1]), toDate(params[2]),
+                    AnomalyType.CONSTANT_LEAKAGE, toInteger(params[3]), toDouble(params[4]));
+        }
+
+        private static VariableLeakageConfigurator initializeVariableLeakageConfigurator(String[] params) {
+            return new VariableLeakageConfigurator(toDate(params[1]), toDate(params[2]),
+                    AnomalyType.VARIABLE_LEAKAGE, toInteger(params[3]), toDouble(params[4]));
+        }
+
+        private static void saveBasicConfigurator(AnomalyConfigurator anomalyConfigurator, BufferedWriter bufferedWriter) throws IOException {
+            writeValueToFile(anomalyConfigurator.getAnomalyTpe().getAnomalyName(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+            writeValueToFile(anomalyConfigurator.getStartDateTime(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+            writeValueToFile(anomalyConfigurator.getEndDateTime(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+        }
+
+        private static void saveConstantLeakageConfigurator(ConstantLeakageConfigurator anomalyConfigurator, BufferedWriter bufferedWriter) throws IOException {
+            saveBasicConfigurator(anomalyConfigurator, bufferedWriter);
+            writeValueToFile(anomalyConfigurator.getTankId(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+            writeValueToFile(anomalyConfigurator.getLeakageVolumePerHour(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+        }
+
+        private static void saveVariableLeakageConfigurator(VariableLeakageConfigurator anomalyConfigurator, BufferedWriter bufferedWriter) throws IOException {
+            saveBasicConfigurator(anomalyConfigurator, bufferedWriter);
+            writeValueToFile(anomalyConfigurator.getTankId(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+            writeValueToFile(anomalyConfigurator.getLeakingPointHeight(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+
+        }
+
+        private static void saveProbeHangConfigurator(ProbeHangConfigurator anomalyConfigurator, BufferedWriter bufferedWriter) throws IOException {
+            saveBasicConfigurator(anomalyConfigurator, bufferedWriter);
+            writeValueToFile(anomalyConfigurator.getTankId(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+
+        }
+
+        private static void saveMeterMiscalibrationConfigurator(MeterMiscalibrationConfigurator anomalyConfigurator, BufferedWriter bufferedWriter) throws IOException {
+            saveBasicConfigurator(anomalyConfigurator, bufferedWriter);
+            writeValueToFile(anomalyConfigurator.getTankId(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+            writeValueToFile(anomalyConfigurator.getGunId(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+            writeValueToFile(anomalyConfigurator.getMiscalibrationCoefficientPerOneCubicMeter(), bufferedWriter);
+            writeSemicolonToFile(bufferedWriter);
+
+        }
+
+        public static Collection<AnomalyConfiguratorCollector> loadConfigurators(String fileName) throws FileNotFoundException, IOException, ParseException {
 
             file = new File(fileName);
             fileInputStream = new FileInputStream(file);
             bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
+            Collection<AnomalyConfiguratorCollector> anomalyConfiguratorCollectorCollection
+                    = new ArrayList<AnomalyConfiguratorCollector>();
+
             String line;
             String anomalyDescriptor;
-            AnomalyConfiguratorCollector anomalyConfiguratorCollector = new AnomalyConfiguratorCollector();
+
             AnomalyType[] anomalyTypes = AnomalyType.values();
-            AnomalyConfigurator anomalyConfigurator;
+            AnomalyConfigurator anomalyConfigurator = null;
 
             while ((line = bufferedReader.readLine()) != null) {
+
+                if (line.equals(endFileSign)) {
+                    break;
+                }
+
+                AnomalyConfiguratorCollector anomalyConfiguratorCollector = new AnomalyConfiguratorCollector();
                 String[] dataSets = line.split(";");
                 anomalyConfiguratorCollector.addDataSetsNames(dataSets);
-                while ((anomalyDescriptor = bufferedReader.readLine()) != null) {
-                    String [] anomalyParameters = anomalyDescriptor.split(";");
+
+                while ((line = bufferedReader.readLine()) != null) {
+
+                    if (line.equals(endSingInFileForDataSetsConfigurators)) {
+                        break;
+                    }
+
+                    String[] anomalyParameters = line.split(";");
                     switch (anomalyParameters[0]) {
                         case ("MeterMiscalibration"):
-                            anomalyConfigurator = new MeterMiscalibrationConfigurator();
+                            anomalyConfigurator = initializeMeterMiscalibrationConfigurator(anomalyParameters);
+                            break;
                         case ("ProbeHang"):
-                            anomalyConfigurator = new ProbeHangConfigurator();
+                            anomalyConfigurator = initializeProbeHangConfigurator(anomalyParameters);
+                            break;
                         case ("ConstantLeakage"):
-                            anomalyConfigurator = new LeakageConfigurator();
+                            anomalyConfigurator = initializeConstantLeakageConfigurator(anomalyParameters);
+                            break;
                         case ("VariableLeakage"):
-                            anomalyConfigurator = new LeakageConfigurator();
+                            anomalyConfigurator = initializeVariableLeakageConfigurator(anomalyParameters);
+                            break;
                         case ("PipelineLeakage"):
-                            anomalyConfigurator = new LeakageConfigurator();
-
+                            break;
                     }
+                    anomalyConfiguratorCollector.addAnomalyConfigurator(anomalyConfigurator);
                 }
+                anomalyConfiguratorCollectorCollection.add(anomalyConfiguratorCollector);
             }
 
             bufferedReader.close();
             fileInputStream.close();
-            return anomalyConfiguratorCollector;
+            return anomalyConfiguratorCollectorCollection;
+        }
+
+        public static void saveConfigurators(String fileName, ArrayList<AnomalyConfiguratorCollector> anomalyConfiguratorCollectorList) throws IOException {
+            File file = new File(fileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+
+            for (AnomalyConfiguratorCollector anomalyConfiguratorCollector : anomalyConfiguratorCollectorList) {
+                for (String dataSetName : anomalyConfiguratorCollector.getDataSetsNames()) {
+                    writeValueToFile(dataSetName, bufferedWriter);
+                    writeValueToFile(";", bufferedWriter);
+                }
+                bufferedWriter.newLine();
+
+                for (AnomalyConfigurator anomalyConfigurator : anomalyConfiguratorCollector.getAnomaliesConfigurators()) {
+                   
+                    switch (anomalyConfigurator.getAnomalyTpe()) {
+
+                        case CONSTANT_LEAKAGE: {
+                            saveConstantLeakageConfigurator((ConstantLeakageConfigurator) anomalyConfigurator, bufferedWriter);
+                            break;
+                        }
+
+                        case METER_MISCALIBRATION:{
+                            saveMeterMiscalibrationConfigurator((MeterMiscalibrationConfigurator) anomalyConfigurator, bufferedWriter);
+                            break;
+                        }
+                            
+                        case PIPELINE_LEAKAGE:{
+                            break;
+                        }
+
+                        case PROBE_HANG:{
+                            saveProbeHangConfigurator((ProbeHangConfigurator) anomalyConfigurator, bufferedWriter);
+                            break;
+                        }
+                            
+                        case VARIABLE_LEAKAGE:{
+                            saveVariableLeakageConfigurator((VariableLeakageConfigurator) anomalyConfigurator, bufferedWriter);
+                            break;
+                        }
+                            
+                    }
+
+                    bufferedWriter.newLine();
+                }
+                writeValueToFile(endSingInFileForDataSetsConfigurators, bufferedWriter);
+                bufferedWriter.newLine();
+            }
+            writeValueToFile(endFileSign, bufferedWriter);
+
+            bufferedWriter.close();
         }
     }
 }

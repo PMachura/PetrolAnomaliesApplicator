@@ -3,24 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package petrolanomaliesapplicator.anomaliesapplicators;
+package petrolanomaliesapplicator.anomaliesconfigurators;
 
 import java.time.LocalDateTime;
 
 
 
 public abstract class AnomalyConfigurator {
-    private String fileName;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private AnomalyType anomalyTpe;
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public AnomalyConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, AnomalyType anomalyTpe) {
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.anomalyTpe = anomalyTpe;
     }
 
     public LocalDateTime getStartDateTime() {
@@ -38,6 +35,21 @@ public abstract class AnomalyConfigurator {
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
+
+    public AnomalyType getAnomalyTpe() {
+        return anomalyTpe;
+    }
+
+    public void setAnomalyTpe(AnomalyType anomalyTpe) {
+        this.anomalyTpe = anomalyTpe;
+    }
+
+    @Override
+    public String toString() {
+        return "AnomalyConfigurator{" + "startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + ", anomalyTpe=" + anomalyTpe + '}';
+    }
+    
+    
     
     
 }

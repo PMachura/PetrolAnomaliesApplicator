@@ -30,7 +30,13 @@ import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.util.TransferFunctionType;
 import petrolanomaliesapplicator.anomaliesapplicators.LeakageApplicator;
 import petrolanomaliesapplicator.anomaliesapplicators.ProbeHangApplicator;
-import petrolanomaliesapplicator.model.HeightVolumeMapper;
+import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfiguratorCollector;
+import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyType;
+import petrolanomaliesapplicator.anomaliesconfigurators.ConstantLeakageConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.MeterMiscalibrationConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.ProbeHangConfigurator;
+import petrolanomaliesapplicator.model.FuelHeightVolumeMapper;
 import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.RefuelMeasure;
 import petrolanomaliesapplicator.model.TankMeasure;
@@ -48,7 +54,11 @@ public class Test {
         ArrayList<TankMeasure> tankMeasures = (ArrayList<TankMeasure>) FileHandler.loadTankMeasures("dane/Zestaw 1/tankMeasures.log");
         ArrayList<NozzleMeasure> nozzleMeasures = (ArrayList<NozzleMeasure>) FileHandler.loadNozzleMeasures("dane/Zestaw 1/nozzleMeasures.log");
         ArrayList<RefuelMeasure> refuelMeasures = (ArrayList<RefuelMeasure>) FileHandler.loadRefuelMeasures("dane/Zestaw 1/refuel.log");
-        HeightVolumeMapper hightVolumeMapper = new HeightVolumeMapper(FileHandler.loadHightVolumeMappers());
+        FuelHeightVolumeMapper hightVolumeMapper = new FuelHeightVolumeMapper(FileHandler.loadHightVolumeMappers());
+        
+        
+        
+        
         Hashtable<Double, Double> firstTankHightVolumeMapper = hightVolumeMapper.getNormalizedMapperForTank(1);
 
         DataSet trainingSet = new DataSet(1, 1);
