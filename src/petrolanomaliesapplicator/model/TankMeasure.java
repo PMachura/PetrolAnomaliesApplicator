@@ -3,15 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package petrolanomaliesapplicator.datatypes;
+package petrolanomaliesapplicator.model;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
  * @author Przemek
  */
 public class TankMeasure {
+
     LocalDateTime dateTime;
     Integer locationId;
     Integer meterId;
@@ -20,9 +25,12 @@ public class TankMeasure {
     Double fuelVolume;
     Double fuelTemperature;
     Double waterHeight;
-    Double waterVolume;   
-    
-    public TankMeasure(){};
+    Double waterVolume;
+
+    public TankMeasure() {
+    }
+
+    ;
 
     public TankMeasure(LocalDateTime dateTime, Integer locationId, Integer meterId, Integer tankId, Double fuelHeight, Double fuelVolume, Double fuelTemperature, Double waterHeight, Double waterVolume) {
         this.dateTime = dateTime;
@@ -35,8 +43,8 @@ public class TankMeasure {
         this.waterHeight = waterHeight;
         this.waterVolume = waterVolume;
     }
-    
-    public TankMeasure copy(){
+
+    public TankMeasure copy() {
         TankMeasure tankMeasureCopy = new TankMeasure();
         tankMeasureCopy.setDateTime(dateTime);
         tankMeasureCopy.setFuelHeight(fuelHeight);
@@ -47,11 +55,11 @@ public class TankMeasure {
         tankMeasureCopy.setTankId(tankId);
         tankMeasureCopy.setWaterHeight(waterHeight);
         tankMeasureCopy.setWaterVolume(waterVolume);
-        
+
         return tankMeasureCopy;
-        
+
     }
-    
+
     public LocalDateTime getDateTime() {
         return dateTime;
     }
@@ -123,13 +131,11 @@ public class TankMeasure {
     public void setWaterVolume(Double waterVolume) {
         this.waterVolume = waterVolume;
     }
-    
-    
-    
+
     @Override
     public String toString() {
-        return "TankMeasure{" + "dateTime=" + dateTime + ", locationId=" + locationId + ", meterId=" + meterId + ", tankId=" + tankId + ", fuelHeight=" + fuelHeight + ", fuelVolume=" + fuelVolume + ", fuelTemperature=" + fuelTemperature + ", waterHeight=" + waterHeight + ", waterVolume=" + waterVolume + '}';
+        //return "TankMeasure{" + "dateTime=" + dateTime + ", locationId=" + locationId + ", meterId=" + meterId + ", tankId=" + tankId + ", fuelHeight=" + fuelHeight + ", fuelVolume=" + fuelVolume + ", fuelTemperature=" + fuelTemperature + ", waterHeight=" + waterHeight + ", waterVolume=" + waterVolume + '}';
+        return "hello";
     }
-    
-    
+
 }
