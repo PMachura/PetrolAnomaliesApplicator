@@ -21,9 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
-import petrolanomaliesapplicator.datatypes.FileHandler;
-import petrolanomaliesapplicator.datatypes.TankMeasure;
-import petrolanomaliesapplicator.leakage.TankLeakageApplicator;
+import petrolanomaliesapplicator.fileshandlers.FileHandler;
+import petrolanomaliesapplicator.model.TankMeasure;
 
 /**
  *
@@ -36,10 +35,42 @@ public class FXMLDocumentController implements Initializable {
     @FXML private FileChooser fileChooser;
     @FXML private Label tankMeasuresFileLabel;
     
+    /* Constant Leakage */
     @FXML private CheckBox constantTankLeakageApplicator;
+    @FXML private TextField constantTankLeakageTankId;
     @FXML private TextField constantTankLeakageValue;
     @FXML private TextField constantTankLeakageDateStart;
     @FXML private TextField constantTankLeakageDateEnd;
+    
+    /* Variable Leakage */
+    @FXML private CheckBox variableTankLeakageApplicator;
+    @FXML private TextField variableTankLeakageTankId;
+    @FXML private TextField variableTankLeakagePointHeight;
+    @FXML private TextField variableTankLeakageDateStart;
+    @FXML private TextField variableTankLeakageDateEnd;
+    
+    /* Pipeline Leakage */
+    @FXML private CheckBox pipelineTankLeakageApplicator;
+    @FXML private TextField pipelineTankLeakageTankId;
+    @FXML private TextField pipelineTankLeakageValue;
+    @FXML private TextField pipelineTankLeakagePointHeight;
+    @FXML private TextField pipelineTankLeakageDateStart;
+    @FXML private TextField pipelineTankLeakageDateEnd;
+    
+    /* Probe Hang */
+    @FXML private CheckBox probeHangApplicator;
+    @FXML private TextField probeHangTankId;
+    @FXML private TextField probeHangDateStart;
+    @FXML private TextField probeHangDateEnd;
+    
+    /* Meter Miscalibration */
+    @FXML private CheckBox meterMiscalibrationApplicator;
+    @FXML private TextField meterMiscalibrationTankId;
+    @FXML private TextField meterMiscalibrationGunId;
+    @FXML private TextField meterMiscalibrationCoefficient;
+    @FXML private TextField meterMiscalibrationDateStart;
+    @FXML private TextField meterMiscalibrationDateEnd;
+    
     
     
     @FXML
@@ -54,41 +85,10 @@ public class FXMLDocumentController implements Initializable {
     
     
     @FXML
-    private void handleStartApplication(ActionEvent event) {
-        
-        if(constantTankLeakageApplicator.selectedProperty().getValue() == true) {
-            applyConstantTankLeakage();
-        }
-        
+    private void handleStartApplication(ActionEvent event) {       
 
     }
-    
-    private void applyConstantTankLeakage() {
-        Integer tankId = 1;
-
-        Double constantLeakage = 10.0;
-        if(constantTankLeakageValue.getText() != null && !constantTankLeakageValue.getText().isEmpty()) {
-            constantLeakage = Double.parseDouble(constantTankLeakageValue.getText());
-            System.out.println(constantLeakage);
-        }
-        
-        LocalDateTime startDate = LocalDateTime.parse(constantTankLeakageDateStart.getText());
-        LocalDateTime endDate = LocalDateTime.parse(constantTankLeakageDateEnd.getText());
-
-        Collection<TankMeasure> editedTankMeasures = TankLeakageApplicator.applyConstantLeakage(
-                tankMeasures,
-                tankId, 
-                startDate, 
-                endDate, 
-                constantLeakage);
-        
-        editedTankMeasures.forEach((TankMeasure tankMeasure) -> {
-            if (tankMeasure.getTankId() == 1) {
-                System.out.println(tankMeasure);
-            }
-        });
-    }
-    
+      
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
