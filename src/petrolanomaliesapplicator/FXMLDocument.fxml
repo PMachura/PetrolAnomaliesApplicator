@@ -1,14 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="petrolanomaliesapplicator.FXMLDocumentController">
-    <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
-    </children>
-</AnchorPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="petrolanomaliesapplicator.FXMLDocumentController">
+   <children>
+      <AnchorPane prefHeight="54.0" prefWidth="807.0">
+         <children>
+            <Separator layoutY="48.0" prefHeight="6.0" prefWidth="1000.0" />
+            <Label alignment="BASELINE_LEFT" layoutX="14.0" layoutY="19.0" text="Tank Measures File" textAlignment="CENTER">
+               <font>
+                  <Font name="Consolas Bold" size="14.0" />
+               </font>
+            </Label>
+            <Button layoutX="178.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleLoadTankMeasures" text="Load file">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Button>
+            <Label fx:id="tankMeasuresFileLabel" layoutX="286.0" layoutY="19.0" prefHeight="14.0" prefWidth="124.0">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="54.0" prefHeight="456.0" prefWidth="1000.0">
+         <children>
+            <Label layoutX="14.0" layoutY="6.0" text="Applicator's Options">
+               <font>
+                  <Font name="Consolas Bold" size="14.0" />
+               </font>
+            </Label>
+            <CheckBox fx:id="constantTankLeakageApplicator" layoutX="14.0" layoutY="57.0" mnemonicParsing="false" text="Constant Leakage">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </CheckBox>
+            <CheckBox fx:id="variableTankLeakageApplicator" layoutX="14.0" layoutY="135.0" mnemonicParsing="false" text="Variable Leakage">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </CheckBox>
+            <CheckBox fx:id="probeHangApplicator" layoutX="15.0" layoutY="307.0" mnemonicParsing="false" text="Probe Hang">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </CheckBox>
+            <Label layoutX="404.0" layoutY="23.0" prefHeight="17.0" prefWidth="193.0" text="Date (yyyy-mm-ddThh:mm:ss)">
+               <font>
+                  <Font name="Consolas" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="293.0" layoutY="59.0" text="Start">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="constantTankLeakageDateStart" layoutX="331.0" layoutY="53.0" />
+            <Label layoutX="500.0" layoutY="58.0" text="End">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="constantTankLeakageDateEnd" layoutX="527.0" layoutY="53.0" />
+            <Label layoutX="36.0" layoutY="90.0" text="Leakage (l/h)">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="constantTankLeakageValue" layoutX="139.0" layoutY="85.0" prefHeight="25.0" prefWidth="76.0" />
+            <Label layoutX="293.0" layoutY="137.0" text="Start">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="variableTankLeakageDateStart" layoutX="330.0" layoutY="131.0" />
+            <Label layoutX="500.0" layoutY="137.0" text="End">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="variableTankLeakageDateEnd" layoutX="527.0" layoutY="132.0" />
+            <CheckBox fx:id="pipelineTankLeakageApplicator" layoutX="14.0" layoutY="220.0" mnemonicParsing="false" text="Pipeline Leakage">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </CheckBox>
+            <CheckBox fx:id="meterMiscalibrationApplicator" layoutX="15.0" layoutY="358.0" mnemonicParsing="false" text="Meter Miscalibration">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </CheckBox>
+            <Label layoutX="177.0" layoutY="57.0" text="Tank ID" />
+            <TextField fx:id="constantTankLeakageTankId" layoutX="226.0" layoutY="54.0" prefHeight="25.0" prefWidth="33.0" />
+            <Label layoutX="177.0" layoutY="135.0" text="Tank ID" />
+            <TextField fx:id="variableTankLeakageTankId" layoutX="226.0" layoutY="131.0" prefHeight="25.0" prefWidth="33.0" />
+            <Label layoutX="35.0" layoutY="171.0" text="Leakage Point Height">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="variableTankLeakagePointHeight" layoutX="185.0" layoutY="166.0" prefHeight="25.0" prefWidth="86.0" />
+            <Label layoutX="177.0" layoutY="220.0" text="Tank ID" />
+            <TextField fx:id="pipelineTankLeakageTankId" layoutX="226.0" layoutY="216.0" prefHeight="25.0" prefWidth="33.0" />
+            <Label layoutX="293.0" layoutY="221.0" text="Start">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="pipelineTankLeakageDateStart" layoutX="331.0" layoutY="216.0" />
+            <Label layoutX="500.0" layoutY="221.0" text="End">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="pipelineTankLeakageDateEnd" layoutX="527.0" layoutY="216.0" />
+            <Label layoutX="36.0" layoutY="260.0" text="Leakage (l/h)">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="pipelineTankLeakageValue" layoutX="139.0" layoutY="254.0" prefHeight="25.0" prefWidth="76.0" />
+            <Label layoutX="244.0" layoutY="260.0" text="Leakage Point Height">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="pipelineTankLeakagePointHeight" layoutX="394.0" layoutY="255.0" prefHeight="25.0" prefWidth="86.0" />
+            <Separator layoutY="116.0" prefHeight="6.0" prefWidth="1000.0" />
+            <Separator layoutY="198.0" prefHeight="6.0" prefWidth="1000.0" />
+            <Separator layoutY="285.0" prefHeight="6.0" prefWidth="1000.0" />
+            <Label layoutX="178.0" layoutY="307.0" text="Tank ID" />
+            <TextField fx:id="probeHangTankId" layoutX="225.0" layoutY="303.0" prefHeight="25.0" prefWidth="33.0" />
+            <Label layoutX="293.0" layoutY="309.0" text="Start">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="probeHangDateStart" layoutX="331.0" layoutY="303.0" />
+            <Label layoutX="500.0" layoutY="309.0" text="End">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="probeHangDateEnd" layoutX="527.0" layoutY="303.0" />
+            <Separator layoutY="337.0" prefHeight="6.0" prefWidth="1000.0" />
+            <Label layoutX="178.0" layoutY="358.0" text="Tank ID" />
+            <TextField fx:id="meterMiscalibrationTankId" layoutX="226.0" layoutY="354.0" prefHeight="25.0" prefWidth="33.0" />
+            <Label layoutX="293.0" layoutY="359.0" text="Start">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="meterMiscalibrationDateStart" layoutX="330.0" layoutY="354.0" />
+            <Label layoutX="500.0" layoutY="360.0" text="End">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="meterMiscalibrationDateEnd" layoutX="527.0" layoutY="354.0" />
+            <Label layoutX="38.0" layoutY="392.0" text="Gun ID" />
+            <TextField fx:id="meterMiscalibrationGunId" layoutX="86.0" layoutY="388.0" prefHeight="25.0" prefWidth="33.0" />
+            <Label layoutX="155.0" layoutY="394.0" text="Miscalibration Coefficient (per m3)">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="meterMiscalibrationCoefficient" layoutX="404.0" layoutY="388.0" prefHeight="25.0" prefWidth="86.0" />
+            <Separator layoutY="422.0" prefHeight="6.0" prefWidth="1000.0" />
+         </children>
+      </AnchorPane>
+      <Button defaultButton="true" layoutX="432.0" layoutY="759.0" mnemonicParsing="false" onAction="#handleStartApplication" text="Run Applicators">
+         <font>
+            <Font name="Consolas" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
