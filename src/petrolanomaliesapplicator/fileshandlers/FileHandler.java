@@ -46,6 +46,11 @@ import petrolanomaliesapplicator.model.TankMeasure;
  */
 public class FileHandler {
 
+    private static enum MapperType {
+        HEIGHT_TO_VOLUME,
+        VOLUME_TO_HEIGHT
+    }
+
     static File file;
     static FileInputStream fileInputStream;
     static BufferedReader bufferedReader;
@@ -87,9 +92,9 @@ public class FileHandler {
         return null;
     }
 
-    public static Hashtable<Double, Double> loadHeightVolumeMapper(String fileName) {
+    public static Hashtable<Double, Double> loadHeightToVolumeMapper(String fileName) {
         try {
-            return HeightVolumeMapperFileHandler.loadMapper(fileName);
+            return HeightVolumeMapperFileHandler.loadMapper(fileName, MapperType.HEIGHT_TO_VOLUME);
         } catch (IOException ex) {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
@@ -98,9 +103,31 @@ public class FileHandler {
         return null;
     }
 
-    public static Hashtable<Integer, Hashtable<Double, Double>> loadHightVolumeMappers() {
+    public static Hashtable<Integer, Hashtable<Double, Double>> loadHeightToVolumeMappers() {
         try {
-            return HeightVolumeMapperFileHandler.loadMappers();
+            return HeightVolumeMapperFileHandler.loadMappers(MapperType.HEIGHT_TO_VOLUME);
+        } catch (IOException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public static Hashtable<Double, Double> loadVolumeToHeightMapper(String fileName) {
+        try {
+            return HeightVolumeMapperFileHandler.loadMapper(fileName, MapperType.VOLUME_TO_HEIGHT);
+        } catch (IOException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public static Hashtable<Integer, Hashtable<Double, Double>> loadVolumeToHeightMappers() {
+        try {
+            return HeightVolumeMapperFileHandler.loadMappers(MapperType.VOLUME_TO_HEIGHT);
         } catch (IOException ex) {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
@@ -413,7 +440,9 @@ public class FileHandler {
         private static final String thirdMapFile = "dane/mapowanie/Tank3_30000.csv";
         private static final String fourthMapFile = "dane/mapowanie/Tank4_40000.csv";
 
-        public static Hashtable<Double, Double> loadMapper(String fileName) throws FileNotFoundException, IOException, ParseException {
+      
+
+        public static Hashtable<Double, Double> loadMapper(String fileName, MapperType mapperType) throws FileNotFoundException, IOException, ParseException {
 
             file = new File(fileName);
             fileInputStream = new FileInputStream(file);
@@ -425,7 +454,12 @@ public class FileHandler {
             line = bufferedReader.readLine(); //Because first row contains strings- attribute names
             while ((line = bufferedReader.readLine()) != null) {
                 String[] fields = line.split(";");
-                mapper.put(toDouble(fields[0]), toDouble(fields[1]));
+                if (mapperType == MapperType.HEIGHT_TO_VOLUME) {
+                    mapper.put(toDouble(fields[0]), toDouble(fields[1]));
+                } else if (mapperType == MapperType.VOLUME_TO_HEIGHT) {
+                    mapper.put(toDouble(fields[1]), toDouble(fields[0]));
+                }
+
             }
 
             bufferedReader.close();
@@ -433,11 +467,11 @@ public class FileHandler {
             return mapper;
         }
 
-        public static Hashtable<Integer, Hashtable<Double, Double>> loadMappers() throws IOException, FileNotFoundException, ParseException {
-            Hashtable<Double, Double> firstMapper = loadMapper(firstMapFile);
-            Hashtable<Double, Double> secondMapper = loadMapper(secondMapFile);
-            Hashtable<Double, Double> thirdMapper = loadMapper(thirdMapFile);
-            Hashtable<Double, Double> fourthMapper = loadMapper(fourthMapFile);
+        public static Hashtable<Integer, Hashtable<Double, Double>> loadMappers(MapperType mapperType) throws IOException, FileNotFoundException, ParseException {
+            Hashtable<Double, Double> firstMapper = loadMapper(firstMapFile, mapperType);
+            Hashtable<Double, Double> secondMapper = loadMapper(secondMapFile, mapperType);
+            Hashtable<Double, Double> thirdMapper = loadMapper(thirdMapFile, mapperType);
+            Hashtable<Double, Double> fourthMapper = loadMapper(fourthMapFile, mapperType);
 
             Hashtable<Integer, Hashtable<Double, Double>> mappers = new Hashtable<Integer, Hashtable<Double, Double>>();
             mappers.put(1, firstMapper);
@@ -447,6 +481,7 @@ public class FileHandler {
 
             return mappers;
         }
+
     }
 
     private static class AnomalyConfiguratorFileHandler {

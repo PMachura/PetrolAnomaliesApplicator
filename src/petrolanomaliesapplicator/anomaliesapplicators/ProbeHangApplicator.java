@@ -8,22 +8,27 @@ package petrolanomaliesapplicator.anomaliesapplicators;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import petrolanomaliesapplicator.helpers.TimeCalculator;
 import petrolanomaliesapplicator.model.TankMeasure;
 
 /**
  *
  * @author Przemek
  */
-public class ProbeHangApplicator {
+public class ProbeHangApplicator extends AnomalyApplicator {
+
+    private Double readFuelHeight = null;
+    private Double readFuelVolume = null;
 
     /**
-     * Applys probe hang anomaly to given TankMeasure collection
-     * Modifies only fuel height attribute
+     * Applys probe hang anomaly to given TankMeasure collection Modifies only
+     * fuel height attribute
+     *
      * @param tankMeasures
      * @param tankId
      * @param startTime
      * @param endTime
-     * @return 
+     * @return
      */
     public static Collection<TankMeasure> applyProbeHang(Collection<TankMeasure> tankMeasures, Integer tankId, LocalDateTime startTime, LocalDateTime endTime) {
         Collection<TankMeasure> modifiedTankMeasures = new ArrayList<TankMeasure>();
@@ -31,9 +36,7 @@ public class ProbeHangApplicator {
         for (TankMeasure tankMeasure : tankMeasures) {
 
             if (tankMeasure.getTankId().equals(tankId)
-                    && (tankMeasure.getDateTime().isEqual(startTime)
-                    || tankMeasure.getDateTime().isEqual(endTime)
-                    || (tankMeasure.getDateTime().isAfter(startTime) && tankMeasure.getDateTime().isBefore(endTime)))) {
+                    && (TimeCalculator.isDateInRange(startTime, endTime, tankMeasure.getDateTime()))) {
                 if (readFuelHeight == null) {
                     readFuelHeight = tankMeasure.getFuelHeight();
                 } else {
@@ -41,12 +44,30 @@ public class ProbeHangApplicator {
                     modifiedTankMeasure.setFuelHeight(readFuelHeight);
                     modifiedTankMeasures.add(modifiedTankMeasure);
                 }
-            }else{
+            } else {
                 modifiedTankMeasures.add(tankMeasure.copy());
             }
 
         }
         return modifiedTankMeasures;
+    }
+
+    public TankMeasure applyPorbeHang(TankMeasure tankMeasure) {
+        
+        TankMeasure modifiedTankMeasure = tankMeasure.copy();
+        if (tankMeasure.getTankId().equals(tankId)
+                && (TimeCalculator.isDateInRange(startTime, endTime, tankMeasure.getDateTime()))) {
+            if (readFuelHeight == null) {
+                readFuelHeight = tankMeasure.getFuelHeight();
+                readFuelVolume = tankMeasure.getFuelVolume();
+            } else {
+
+                modifiedTankMeasure.setFuelHeight(readFuelHeight);
+                modifiedTankMeasure.setFuelVolume(readFuelVolume);
+            }
+        }
+
+        return modifiedTankMeasure;
     }
 
 }

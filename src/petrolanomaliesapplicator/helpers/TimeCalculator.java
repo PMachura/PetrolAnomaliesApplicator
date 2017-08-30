@@ -24,5 +24,13 @@ public class TimeCalculator {
     public static Double durationInHours(LocalDateTime start, LocalDateTime end){
         return Duration.between(start,end).toMillis()/1000.0/60.0/60.0;
     }
+    
+    public static Double durationInMinutes(LocalDateTime start, LocalDateTime end){
+        return Duration.between(start,end).toMillis()/1000.0/60.0;
+    }
+    
+    public static boolean isDateInRange(LocalDateTime start, LocalDateTime end, LocalDateTime date){
+        return date.isEqual(start) || date.isEqual(end) || (date.isAfter(start) && date.isBefore(end));
+    }
 
 }

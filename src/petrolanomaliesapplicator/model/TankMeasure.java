@@ -134,8 +134,7 @@ public class TankMeasure {
 
     @Override
     public String toString() {
-        //return "TankMeasure{" + "dateTime=" + dateTime + ", locationId=" + locationId + ", meterId=" + meterId + ", tankId=" + tankId + ", fuelHeight=" + fuelHeight + ", fuelVolume=" + fuelVolume + ", fuelTemperature=" + fuelTemperature + ", waterHeight=" + waterHeight + ", waterVolume=" + waterVolume + '}';
-        return "hello";
+        return "TankMeasure{" + "dateTime=" + dateTime + ", locationId=" + locationId + ", meterId=" + meterId + ", tankId=" + tankId + ", fuelHeight=" + fuelHeight + ", fuelVolume=" + fuelVolume + ", fuelTemperature=" + fuelTemperature + ", waterHeight=" + waterHeight + ", waterVolume=" + waterVolume + '}';
     }
 
 }

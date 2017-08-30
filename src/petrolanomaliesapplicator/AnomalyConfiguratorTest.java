@@ -27,16 +27,13 @@ public class AnomalyConfiguratorTest {
         AnomalyConfigurator anomalyConfigurator;
         
         anomalyConfiguratorCollector.addDataSetsNames(new String[]{"Zestaw 1", "Zestaw 2"});
-        anomalyConfigurator = new ProbeHangConfigurator(LocalDateTime.now(), LocalDateTime.now().plusDays(3),
-                AnomalyType.PROBE_HANG,2);
+        anomalyConfigurator = new ProbeHangConfigurator(LocalDateTime.now(), LocalDateTime.now().plusDays(3),2);
         anomalyConfiguratorCollector.addAnomalyConfigurator(anomalyConfigurator);
         
-        anomalyConfigurator = new ConstantLeakageConfigurator(LocalDateTime.now(), LocalDateTime.now().plusDays(4),
-                AnomalyType.CONSTANT_LEAKAGE,2, 5.0);
+        anomalyConfigurator = new ConstantLeakageConfigurator(LocalDateTime.now(), LocalDateTime.now().plusDays(4),2, 5.0);
         anomalyConfiguratorCollector.addAnomalyConfigurator(anomalyConfigurator);
         
-        anomalyConfigurator = new MeterMiscalibrationConfigurator(LocalDateTime.now(), LocalDateTime.now().plusDays(4),
-                AnomalyType.METER_MISCALIBRATION,1,1, 2.0);
+        anomalyConfigurator = new MeterMiscalibrationConfigurator(LocalDateTime.now(), LocalDateTime.now().plusDays(4),1,1, 2.0);
         anomalyConfiguratorCollector.addAnomalyConfigurator(anomalyConfigurator);
         
         anomalyConfiguratorCollectorsList.add(anomalyConfiguratorCollector);
