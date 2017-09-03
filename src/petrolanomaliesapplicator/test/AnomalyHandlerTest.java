@@ -5,6 +5,7 @@
  */
 package petrolanomaliesapplicator.test;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfigurator;
@@ -43,7 +44,11 @@ public class AnomalyHandlerTest {
         FileHandler.saveAnomalyHandlerPropertiesAndConfigurators("configurators.txt", anomaliesHandlers);
         FileHandler.saveAnomalyHandlerPropertiesAndConfigurators("singleConfigurator.txt", anomalyHandler);
         
-        anomalyHandler = FileHandler.loadAnomalyHandlerPropertiesAndConfigurators("singleConfigurator.txt");
+        try {
+            anomalyHandler = FileHandler.loadAnomalyHandlerPropertiesAndConfigurators("singleConfigurator.txt");
+        } catch(IOException ex) {
+            
+        }
         System.out.println("Pojedynczy");
         for(AnomalyConfigurator configurator : anomalyHandler.getAnomaliesConfigurators()){
                 System.out.println(configurator);

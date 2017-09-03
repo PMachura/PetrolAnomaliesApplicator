@@ -230,11 +230,12 @@ public class FileHandler {
         return loadAnomalyHandlersPropertiesAndConfigurators(configuratorsFileName);
     }
 
-    public static AnomalyHandler loadAnomalyHandlerPropertiesAndConfigurators(String fileName) {
+    public static AnomalyHandler loadAnomalyHandlerPropertiesAndConfigurators(String fileName) throws IOException {
         try {
             return AnomalyHandlerFileHandler.loadAnomalyHandlerPropertiesAndConfigurators(configuratorsPath + fileName);
         } catch (IOException ex) {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IOException();
         } catch (ParseException ex) {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }

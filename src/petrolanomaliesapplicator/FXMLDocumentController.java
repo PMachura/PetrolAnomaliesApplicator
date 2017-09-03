@@ -6,6 +6,7 @@
 package petrolanomaliesapplicator;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -256,8 +257,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleLoadConfiguration(ActionEvent event) {
         if(!configuratorNameLoad.getText().isEmpty()) {
-            loadAnomalyHandler = FileHandler.loadAnomalyHandlerPropertiesAndConfigurators(configuratorNameLoad.getText()); 
-            loadSuccess.setText("Load configuration success");
+            try {
+                loadAnomalyHandler = FileHandler.loadAnomalyHandlerPropertiesAndConfigurators(configuratorNameLoad.getText()); 
+                loadSuccess.setText("Load configuration success");
+            } catch(IOException ex) {
+                loadSuccess.setText("File not found");
+            }
         } else {
             loadSuccess.setText("Empty input");
         }
