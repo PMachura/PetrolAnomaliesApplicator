@@ -8,6 +8,7 @@ package petrolanomaliesapplicator;
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ResourceBundle;
@@ -105,92 +106,173 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleSaveConfiguration(ActionEvent event) {
-        saveAnomalyHandler.setInputDataSetFileFolder(fileSet.getValue().toString());
-        saveAnomalyHandler.setOutpuDataSetFileFolder(outputDir.getText());
-        
-        FileHandler.saveAnomalyHandlerPropertiesAndConfigurators(configuratorName.getText(), saveAnomalyHandler);
-        
-        saveSuccess.setText("Save configuration success");
+        if(fileSet.getValue() == null
+        && !outputDir.getText().isEmpty() 
+        && !configuratorName.getText().isEmpty()) {
+            saveAnomalyHandler.setInputDataSetFileFolder(fileSet.getValue().toString());
+            saveAnomalyHandler.setOutpuDataSetFileFolder(outputDir.getText());
+
+            FileHandler.saveAnomalyHandlerPropertiesAndConfigurators(configuratorName.getText(), saveAnomalyHandler);
+
+            saveSuccess.setText("Save configuration success");
+        } else {
+            saveSuccess.setText("Empty inputs");
+        }
     }
     
     @FXML
     private void createConstantLeakageConfiguration(ActionEvent event) {
-        AnomalyConfigurator anomalyConfigurator = new ConstantTankLeakageConfigurator(
-                LocalDateTime.parse(constantTankLeakageDateStart.getText()), 
-                LocalDateTime.parse(constantTankLeakageDateEnd.getText()), 
-                Integer.parseInt(constantTankLeakageTankId.getText()), 
-                Double.parseDouble(constantTankLeakageValue.getText())
-        );
-        saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
-        constantTankLeakageCount++;
-        constantTankLeakageApplicator.setText("Added: " + constantTankLeakageCount);
+        if(!constantTankLeakageDateStart.getText().isEmpty()
+        && !constantTankLeakageDateEnd.getText().isEmpty()
+        && !constantTankLeakageTankId.getText().isEmpty()
+        && !constantTankLeakageValue.getText().isEmpty()) {
+            try {
+                AnomalyConfigurator anomalyConfigurator = new ConstantTankLeakageConfigurator(
+                    LocalDateTime.parse(constantTankLeakageDateStart.getText()), 
+                    LocalDateTime.parse(constantTankLeakageDateEnd.getText()), 
+                    Integer.parseInt(constantTankLeakageTankId.getText()), 
+                    Double.parseDouble(constantTankLeakageValue.getText())
+                );
+                saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+                constantTankLeakageCount++;
+                constantTankLeakageApplicator.setText("Added: " + constantTankLeakageCount);
+            } catch(NumberFormatException ex) {
+                constantTankLeakageApplicator.setText("Wrong number");
+            } catch(DateTimeParseException ex) {
+                constantTankLeakageApplicator.setText("Wrong date");
+            }
+        } else {
+            constantTankLeakageApplicator.setText("Empty inputs");
+        }   
     }
     
     @FXML
     private void createVariableLeakageConfiguration(ActionEvent event) {
-        AnomalyConfigurator anomalyConfigurator = new VariableTankLeakageConfigurator(
-                LocalDateTime.parse(variableTankLeakageDateStart.getText()), 
-                LocalDateTime.parse(variableTankLeakageDateEnd.getText()), 
-                Integer.parseInt(variableTankLeakageTankId.getText()), 
-                Double.parseDouble(variableTankLeakagePointHeight.getText())
-        );
-        saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
-        variableTankLeakageCount++;
-        variableTankLeakageApplicator.setText("Added: " + variableTankLeakageCount);
+        if(!variableTankLeakageDateStart.getText().isEmpty() 
+        && !variableTankLeakageDateEnd.getText().isEmpty() 
+        && !variableTankLeakageTankId.getText().isEmpty() 
+        && !variableTankLeakagePointHeight.getText().isEmpty()) {
+            try {
+                AnomalyConfigurator anomalyConfigurator = new VariableTankLeakageConfigurator(
+                    LocalDateTime.parse(variableTankLeakageDateStart.getText()), 
+                    LocalDateTime.parse(variableTankLeakageDateEnd.getText()), 
+                    Integer.parseInt(variableTankLeakageTankId.getText()), 
+                    Double.parseDouble(variableTankLeakagePointHeight.getText())
+                );
+                saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+                variableTankLeakageCount++;
+                variableTankLeakageApplicator.setText("Added: " + variableTankLeakageCount);
+            } catch(NumberFormatException ex) {
+                variableTankLeakageApplicator.setText("Wrong number");
+            } catch(DateTimeParseException ex) {
+                variableTankLeakageApplicator.setText("Wrong date");
+            }
+        } else {
+            variableTankLeakageApplicator.setText("Empty inputs");
+        }
+        
     }
     
     @FXML
     private void createPipelineLeakageConfiguration(ActionEvent event) {
-        AnomalyConfigurator anomalyConfigurator = new PipelineLeakageConfigurator(
-                LocalDateTime.parse(pipelineTankLeakageDateStart.getText()), 
-                LocalDateTime.parse(pipelineTankLeakageDateEnd.getText()), 
-                Integer.parseInt(pipelineTankLeakageTankId.getText()), 
-                Integer.parseInt(pipelineTankLeakageGunId.getText()), 
-                Double.parseDouble(pipelineTankLeakageValuePerCubicMeter.getText())
-        );
-        saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
-        pipelineTankLeakageCount++;
-        pipelineTankLeakageApplicator.setText("Added: " + pipelineTankLeakageCount);
+        if(!pipelineTankLeakageDateStart.getText().isEmpty() 
+        && !pipelineTankLeakageDateEnd.getText().isEmpty() 
+        && !pipelineTankLeakageTankId.getText().isEmpty() 
+        && !pipelineTankLeakageGunId.getText().isEmpty() 
+        && !pipelineTankLeakageValuePerCubicMeter.getText().isEmpty()) {
+            try {
+                AnomalyConfigurator anomalyConfigurator = new PipelineLeakageConfigurator(
+                    LocalDateTime.parse(pipelineTankLeakageDateStart.getText()), 
+                    LocalDateTime.parse(pipelineTankLeakageDateEnd.getText()), 
+                    Integer.parseInt(pipelineTankLeakageTankId.getText()), 
+                    Integer.parseInt(pipelineTankLeakageGunId.getText()), 
+                    Double.parseDouble(pipelineTankLeakageValuePerCubicMeter.getText())
+                );
+                saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+                pipelineTankLeakageCount++;
+                pipelineTankLeakageApplicator.setText("Added: " + pipelineTankLeakageCount);
+            } catch(NumberFormatException ex) {
+                pipelineTankLeakageApplicator.setText("Wrong number");
+            } catch(DateTimeParseException ex) {
+                pipelineTankLeakageApplicator.setText("Wrong date");
+            }
+        } else {
+            pipelineTankLeakageApplicator.setText("Empty inputs");
+        }
     }
     
     @FXML
     private void createProbeHangConfiguration(ActionEvent event) {
-        AnomalyConfigurator anomalyConfigurator = new ProbeHangConfigurator(
-                LocalDateTime.parse(probeHangDateStart.getText()), 
-                LocalDateTime.parse(probeHangDateEnd.getText()), 
-                Integer.parseInt(probeHangTankId.getText())
-        );
-        saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
-        probeHangCount++;
-        probeHangApplicator.setText("Added: " + probeHangCount);
+        if(!probeHangDateStart.getText().isEmpty() 
+        && !probeHangDateEnd.getText().isEmpty() 
+        && !probeHangTankId.getText().isEmpty()) {
+            try {
+                AnomalyConfigurator anomalyConfigurator = new ProbeHangConfigurator(
+                    LocalDateTime.parse(probeHangDateStart.getText()), 
+                    LocalDateTime.parse(probeHangDateEnd.getText()), 
+                    Integer.parseInt(probeHangTankId.getText())
+                );
+                saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+                probeHangCount++;
+                probeHangApplicator.setText("Added: " + probeHangCount);
+            } catch(NumberFormatException ex) {
+                probeHangApplicator.setText("Wrong number");
+            } catch(DateTimeParseException ex) {
+                probeHangApplicator.setText("Wrong date");
+            }
+        } else {
+            probeHangApplicator.setText("Empty inputs");
+        }
     }
     
     @FXML
     private void createMeterMiscalibrationConfiguration(ActionEvent event) {
-        AnomalyConfigurator anomalyConfigurator = new MeterMiscalibrationConfigurator(
-                LocalDateTime.parse(meterMiscalibrationDateStart.getText()), 
-                LocalDateTime.parse(meterMiscalibrationDateEnd.getText()), 
-                Integer.parseInt(meterMiscalibrationTankId.getText()), 
-                Integer.parseInt(meterMiscalibrationGunId.getText()), 
-                Double.parseDouble(meterMiscalibrationCoefficient.getText())
-        );
-        saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
-        meterMiscalibrationCount++;
-        meterMiscalibrationApplicator.setText("Added: " + meterMiscalibrationCount);
+        if(!meterMiscalibrationDateStart.getText().isEmpty() 
+        && !meterMiscalibrationDateEnd.getText().isEmpty() 
+        && !meterMiscalibrationTankId.getText().isEmpty() 
+        && !meterMiscalibrationGunId.getText().isEmpty() 
+        && !meterMiscalibrationCoefficient.getText().isEmpty()) {
+            try {
+                AnomalyConfigurator anomalyConfigurator = new MeterMiscalibrationConfigurator(
+                    LocalDateTime.parse(meterMiscalibrationDateStart.getText()), 
+                    LocalDateTime.parse(meterMiscalibrationDateEnd.getText()), 
+                    Integer.parseInt(meterMiscalibrationTankId.getText()), 
+                    Integer.parseInt(meterMiscalibrationGunId.getText()), 
+                    Double.parseDouble(meterMiscalibrationCoefficient.getText())
+                );
+                saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+                meterMiscalibrationCount++;
+                meterMiscalibrationApplicator.setText("Added: " + meterMiscalibrationCount);
+            } catch(NumberFormatException ex) {
+                meterMiscalibrationApplicator.setText("Wrong number");
+            } catch(DateTimeParseException ex) {
+                meterMiscalibrationApplicator.setText("Wrong date");
+            }
+        } else {
+            meterMiscalibrationApplicator.setText("Empty inputs");
+        }
     }
     
     @FXML
     private void handleLoadConfiguration(ActionEvent event) {
-        loadAnomalyHandler = FileHandler.loadAnomalyHandlerPropertiesAndConfigurators(configuratorNameLoad.getText()); 
-        loadSuccess.setText("Load configuration success");
+        if(!configuratorNameLoad.getText().isEmpty()) {
+            loadAnomalyHandler = FileHandler.loadAnomalyHandlerPropertiesAndConfigurators(configuratorNameLoad.getText()); 
+            loadSuccess.setText("Load configuration success");
+        } else {
+            loadSuccess.setText("Empty input");
+        }
     }
     
     
     @FXML
-    private void handleStartApplication(ActionEvent event) {       
-        loadAnomalyHandler.applyAnomalies();
-        loadAnomalyHandler.saveOutputDataSet();
-        applySuccess.setText("Apply anomalies and save success");
+    private void handleStartApplication(ActionEvent event) {
+        if(loadAnomalyHandler != null) {
+            loadAnomalyHandler.applyAnomalies();
+            loadAnomalyHandler.saveOutputDataSet();
+            applySuccess.setText("Apply anomalies and save success");
+        } else {
+            applySuccess.setText("First load configuration file");
+        }
     }
       
     
