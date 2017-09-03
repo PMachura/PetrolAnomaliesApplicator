@@ -7,6 +7,7 @@ package petrolanomaliesapplicator.anomaliesapplicators;
 
 import java.time.LocalDateTime;
 import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfigurator;
+import petrolanomaliesapplicator.model.DataSetCollection;
 
 /**
  *
@@ -22,4 +23,6 @@ public abstract class AnomalyApplicator {
         this.endTime = anomalyConfigurator.getEndDateTime();
         this.tankId = anomalyConfigurator.getTankId();
     }
+    
+    
 }

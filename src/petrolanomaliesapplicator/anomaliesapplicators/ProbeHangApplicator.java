@@ -56,6 +56,10 @@ public class ProbeHangApplicator extends AnomalyApplicator {
         }
         return modifiedTankMeasures;
     }
+    
+    public  Collection<TankMeasure> applyProbeHang(Collection<TankMeasure> tankMeasures) {
+       return applyProbeHang(tankMeasures, tankId, startTime, endTime);
+    }
 
     public TankMeasure applyPorbeHang(TankMeasure tankMeasure) {
         

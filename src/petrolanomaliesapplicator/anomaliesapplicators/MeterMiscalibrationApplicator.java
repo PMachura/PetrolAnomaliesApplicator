@@ -72,6 +72,10 @@ public class MeterMiscalibrationApplicator extends AnomalyApplicator {
         }
         return modifiedNozzleMeasures;
     }
+    
+    public Collection<NozzleMeasure> applyMeterMiscalibration(Collection<NozzleMeasure> nozzleMeasures){
+        return applyMeterMiscalibration(nozzleMeasures, tankId, gunId, startTime, endTime, miscalibrationCoefficientPerOneCubicMeter);
+    }
 
     public NozzleMeasure applyMeterMiscalibration(NozzleMeasure nozzleMeasure) {
 
