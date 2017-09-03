@@ -18,9 +18,11 @@
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/AnomalyConfigurator.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/AnomalyApplicator.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/ConstantTankLeakageConfigurator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/test/MeterMiscalibrationTest.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/fileshandlers/FileHandler.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/AnomalyHandler.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/VariableTankLeakageApplicator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/test/VariableTankLeakageTest.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/FuelHeightVolumeMapper.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/test/Test.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/helpers/TimeCalculator.java</file>

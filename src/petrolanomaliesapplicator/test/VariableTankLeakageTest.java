@@ -6,35 +6,32 @@
 package petrolanomaliesapplicator.test;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
-import javafx.util.converter.LocalDateTimeStringConverter;
 import petrolanomaliesapplicator.anomaliesapplicators.ConstantTankLeakageApplicator;
-import petrolanomaliesapplicator.anomaliesapplicators.PipelineLeakageApplicator;
+import petrolanomaliesapplicator.anomaliesapplicators.VariableTankLeakageApplicator;
 import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfigurator;
 import petrolanomaliesapplicator.anomaliesconfigurators.ConstantTankLeakageConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.VariableTankLeakageConfigurator;
 import petrolanomaliesapplicator.fileshandlers.FileHandler;
-import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.TankMeasure;
 
 /**
  *
  * @author Przemek
  */
-public class ConstantTankLeakageTest {
-
+public class VariableTankLeakageTest {
     static void test() {
         ArrayList<TankMeasure> tankMeasures = (ArrayList<TankMeasure>) FileHandler.loadTankMeasures("dane/Zestaw 1/tankMeasures.log");
-        AnomalyConfigurator anomalyConfigurator = new ConstantTankLeakageConfigurator(LocalDateTime.of(2014, 1, 1, 0, 5, 0), LocalDateTime.of(2014, 1, 1, 0, 15, 0), 1, 5.0);
-        ConstantTankLeakageApplicator applicator = new ConstantTankLeakageApplicator((ConstantTankLeakageConfigurator) anomalyConfigurator);
-        //ArrayList<TankMeasure> modifiedTankMeasures = (ArrayList<TankMeasure>) applicator.applyConstantTankLeakage(tankMeasures);
-        //  ConstantTankLeakageApplicator.applyConstantTankLeakage(tankMeasures, LocalDateTime.of(2014,1,1,0,5,0),  LocalDateTime.of(2014,1,1,0,15,0),1,5.0);
+        AnomalyConfigurator anomalyConfigurator = new VariableTankLeakageConfigurator(LocalDateTime.of(2014, 1, 1, 0, 5, 0), LocalDateTime.of(2014, 1, 1, 0, 15, 0), 1, 10.0);
+        VariableTankLeakageApplicator applicator = new VariableTankLeakageApplicator( (VariableTankLeakageConfigurator) anomalyConfigurator);
+       // ArrayList<TankMeasure> modifiedTankMeasures = (ArrayList<TankMeasure>) applicator.applyVariableTankLeakage(tankMeasures);
+      //   ArrayList<TankMeasure> modifiedTankMeasures = (ArrayList<TankMeasure>) VariableTankLeakageApplicator.applyVariableTankLeakage(tankMeasures, LocalDateTime.of(2014,1,1,0,5,0),  LocalDateTime.of(2014,1,1,0,15,0),1,10.0);
 
         for (TankMeasure tankMeasure : tankMeasures) {
-            System.out.println(applicator.applyConstantTankLeakage(tankMeasure));
+            System.out.println(applicator.applyVariableTankLeakage(tankMeasure));
         }
 
-        //  for (TankMeasure tankMeasure : modifiedTankMeasures) {
+       //   for (TankMeasure tankMeasure : modifiedTankMeasures) {
         //     System.out.println(tankMeasure);
         //   }
     }

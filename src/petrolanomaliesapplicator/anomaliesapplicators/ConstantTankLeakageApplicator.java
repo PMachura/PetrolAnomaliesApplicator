@@ -52,7 +52,6 @@ public class ConstantTankLeakageApplicator extends AnomalyApplicator {
         Double wholeLeakageVolume = TimeCalculator.durationInHours(startTime, endTime) * leakageVolumePerHour;
         FuelHeightVolumeMapper volumeToHeightMapper = FuelHeightVolumeMapperFactory.getVolumeToHeightMapper(tankId);
         
- 
 
         for (TankMeasure tankMeasure : tankMeasures) {
             if (tankMeasure.getTankId().equals(tankId)

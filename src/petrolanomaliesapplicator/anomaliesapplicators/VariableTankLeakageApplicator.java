@@ -43,7 +43,7 @@ public class VariableTankLeakageApplicator extends AnomalyApplicator {
      * @return
      */
     public static Collection<TankMeasure> applyVariableTankLeakage(Collection<TankMeasure> tankMeasures,
-            Integer tankId, LocalDateTime startTime, LocalDateTime endTime, Double leakingPointHeight) {
+             LocalDateTime startTime, LocalDateTime endTime, Integer tankId, Double leakingPointHeight) {
 
         Collection<TankMeasure> modifiedTankMeasures = new ArrayList<TankMeasure>();
         Double leakedFuelSum = 0.0;
@@ -76,7 +76,12 @@ public class VariableTankLeakageApplicator extends AnomalyApplicator {
         return modifiedTankMeasures;
     }
     
-    public TankMeasure applyVariableLeakage(TankMeasure tankMeasure){
+    public  Collection<TankMeasure> applyVariableTankLeakage(Collection<TankMeasure> tankMeasures) {
+     
+        return VariableTankLeakageApplicator.this.applyVariableTankLeakage(tankMeasures,  startTime, endTime, tankId, leakingPointHeight);
+    }
+    
+    public TankMeasure applyVariableTankLeakage(TankMeasure tankMeasure){
        
         TankMeasure modifiedTankMeasure = tankMeasure.clone();     
         if (tankMeasure.getTankId().equals(tankId)

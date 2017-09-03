@@ -66,6 +66,13 @@ public class FileHandler {
     static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     static NumberFormat numberFormat = NumberFormat.getInstance(Locale.FRANCE);
     static DecimalFormat decimalFormat = new DecimalFormat("#.##########");
+    
+    public static void createDirectory(String directory){
+        File file = new File(directory);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+    }
 
     public static DataSetCollection loadDataSetCollection(BaseDataSetLocation dataSetLocation) {
         DataSetCollection dataSetCollection = new DataSetCollection();
@@ -84,9 +91,14 @@ public class FileHandler {
     }
 
     public static void saveDataSetCollection(String folderName, DataSetCollection dataSetCollection) {
+        createDirectory(dataSetPath + folderName);
         saveTankMeasuresToFile(dataSetCollection.getTankMeasures(), dataSetPath + folderName + "/" + DataSetType.TANK_MEASURES.getFileName());
         saveNozzleMeasuresToFile(dataSetCollection.getNozzleMeasures(), dataSetPath + folderName + "/" + DataSetType.NOZZLE_MEASURES.getFileName());
         saveRefuelMeasuresToFile(dataSetCollection.getRefuelMeasures(), dataSetPath + folderName + "/" + DataSetType.REFUEL_MEASURES.getFileName());
+    }
+    
+    public static void saveAnomalyHandlerOutputDataSetCollection(AnomalyHandler anomalyHandler){
+        saveDataSetCollection(anomalyHandler.getOutpuDataSetFileFolder(),anomalyHandler.getOutputDataSetCollection());
     }
 
     public static Collection<TankMeasure> loadTankMeasures(BaseDataSetLocation dataSetLocation) {
@@ -217,7 +229,7 @@ public class FileHandler {
     public static Collection<AnomalyHandler> loadAnomalyHandlersPropertiesAndConfigurators() {
         return loadAnomalyHandlersPropertiesAndConfigurators(configuratorsFileName);
     }
-    
+
     public static AnomalyHandler loadAnomalyHandlerPropertiesAndConfigurators(String fileName) {
         try {
             return AnomalyHandlerFileHandler.loadAnomalyHandlerPropertiesAndConfigurators(configuratorsPath + fileName);
@@ -639,7 +651,6 @@ public class FileHandler {
                     = new ArrayList<AnomalyHandler>();
 
             String line;
-            
 
             while ((line = bufferedReader.readLine()) != null) {
 
@@ -652,15 +663,14 @@ public class FileHandler {
                  */
                 AnomalyHandler anomalyHandler = new AnomalyHandler();
                 String[] dataSetFolderLocation = line.split(";");
-                anomalyHandler.setInputDataSetFileFolder(dataSetFolderLocation[0]);
-                anomalyHandler.setInputDataSetFileFolder(dataSetFolderLocation[1]);
+                anomalyHandler.setDataSetFileFolders(dataSetFolderLocation);
 
                 /**
                  * Wczytywanie poszczególnych konfiguratorów
                  */
                 ArrayList<AnomalyConfigurator> anomalyConfiguratorCollector = loadAnomalyConfigurators(bufferedReader);
                 anomalyHandler.setAnomaliesConfigurators(anomalyConfiguratorCollector);
-                
+
                 anomalyConfiguratorCollectorCollection.add(anomalyHandler);
             }
 
@@ -668,7 +678,7 @@ public class FileHandler {
             fileInputStream.close();
             return anomalyConfiguratorCollectorCollection;
         }
-        
+
         public static AnomalyHandler loadAnomalyHandlerPropertiesAndConfigurators(String fileName) throws FileNotFoundException, IOException, ParseException {
 
             file = new File(fileName);
@@ -678,8 +688,6 @@ public class FileHandler {
             String line;
             AnomalyHandler anomalyHandler = null;
 
-            AnomalyType[] anomalyTypes = AnomalyType.values();
-            AnomalyConfigurator anomalyConfigurator = null;
 
             while ((line = bufferedReader.readLine()) != null) {
 
@@ -692,15 +700,14 @@ public class FileHandler {
                  */
                 anomalyHandler = new AnomalyHandler();
                 String[] dataSetFolderLocation = line.split(";");
-                anomalyHandler.setInputDataSetFileFolder(dataSetFolderLocation[0]);
-                anomalyHandler.setInputDataSetFileFolder(dataSetFolderLocation[1]);
+                anomalyHandler.setDataSetFileFolders(dataSetFolderLocation);
 
                 /**
                  * Wczytywanie poszczególnych konfiguratorów
                  */
                 ArrayList<AnomalyConfigurator> anomalyConfiguratorCollector = loadAnomalyConfigurators(bufferedReader);
                 anomalyHandler.setAnomaliesConfigurators(anomalyConfiguratorCollector);
-                             
+
             }
 
             bufferedReader.close();
@@ -709,11 +716,11 @@ public class FileHandler {
         }
 
         private static ArrayList<AnomalyConfigurator> loadAnomalyConfigurators(BufferedReader bufferedReader) throws IOException {
-            
+
             String line;
-            AnomalyConfigurator anomalyConfigurator =null;
+            AnomalyConfigurator anomalyConfigurator = null;
             ArrayList<AnomalyConfigurator> anomalyConfiguratorCollector = new ArrayList<AnomalyConfigurator>();
-            
+
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.equals(endSingInFileForDataSetsConfigurators)) {
                     break;
@@ -736,7 +743,7 @@ public class FileHandler {
                     anomalyConfigurator = initializePipelineLeakageConfigurator(anomalyParameters);
                 }
 
-                if(anomalyConfigurator != null){
+                if (anomalyConfigurator != null) {
                     anomalyConfiguratorCollector.add(anomalyConfigurator);
                 }
             }

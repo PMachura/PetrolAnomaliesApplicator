@@ -8,6 +8,7 @@ package petrolanomaliesapplicator.anomaliesconfigurators;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import petrolanomaliesapplicator.fileshandlers.FileHandler;
 import petrolanomaliesapplicator.model.BaseDataSetLocation;
 import petrolanomaliesapplicator.model.DataSetCollection;
 import petrolanomaliesapplicator.model.DataSetFactory;
@@ -28,6 +29,10 @@ public class AnomalyHandler {
     public void setDataSetFileFolders(String [] folders){
         inputDataSetFileFolder = folders[0];
         outpuDataSetFileFolder = folders[1];
+    }
+    
+    public void saveOutputDataSet(){
+        FileHandler.saveAnomalyHandlerOutputDataSetCollection(this);
     }
     
     public void loadInputDataSetCollection(){

@@ -48,6 +48,10 @@ public class AnomalyHandlerTest {
         for(AnomalyConfigurator configurator : anomalyHandler.getAnomaliesConfigurators()){
                 System.out.println(configurator);
         } 
+        System.out.print(anomalyHandler.getInputDataSetFileFolder());
+        anomalyHandler.loadInputDataSetCollection();
+        anomalyHandler.setOutputDataSetCollection(anomalyHandler.getInputDataSetCollection());
+        anomalyHandler.saveOutputDataSet();
         
         System.out.println("Zbiorowy");
         ArrayList<AnomalyHandler> anomalyConfiguratorCollectorsListLoaded = (ArrayList<AnomalyHandler>) FileHandler.loadAnomalyHandlersPropertiesAndConfigurators("configurators.txt");

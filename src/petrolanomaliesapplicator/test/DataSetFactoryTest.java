@@ -5,6 +5,7 @@
  */
 package petrolanomaliesapplicator.test;
 
+import petrolanomaliesapplicator.fileshandlers.FileHandler;
 import petrolanomaliesapplicator.model.BaseDataSetLocation;
 import petrolanomaliesapplicator.model.DataSetCollection;
 import petrolanomaliesapplicator.model.DataSetFactory;
@@ -19,8 +20,9 @@ public class DataSetFactoryTest {
     public static void test(){
         DataSetCollection dataSetCollection = DataSetFactory.getDataSet(BaseDataSetLocation.ZESTAW1.getFolderName());
         for(TankMeasure tankMeasure : dataSetCollection.getTankMeasures()){
-            System.out.println(tankMeasure);
+       //     System.out.println(tankMeasure);
         }
+        FileHandler.saveDataSetCollection("Zestaw 20", dataSetCollection);
     }
     
     public static void main(String [] args){
