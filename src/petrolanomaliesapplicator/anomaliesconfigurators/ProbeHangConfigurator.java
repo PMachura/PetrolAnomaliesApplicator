@@ -12,22 +12,11 @@ import java.time.LocalDateTime;
  * @author Przemek
  */
 public class ProbeHangConfigurator extends AnomalyConfigurator {
-    private Integer tankId;
+
 
     public ProbeHangConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer tankId) {
-        super(startDateTime, endDateTime);
+        super(startDateTime, endDateTime, tankId);
         this.anomalyTpe = AnomalyType.PROBE_HANG;
-        this.tankId = tankId;
-    }
-
-    
-    
-    public Integer getTankId() {
-        return tankId;
-    }
-
-    public void setTankId(Integer tankId) {
-        this.tankId = tankId;
     }
 
     @Override

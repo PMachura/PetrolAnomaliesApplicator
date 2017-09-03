@@ -44,7 +44,7 @@ public class TankMeasure {
         this.waterVolume = waterVolume;
     }
 
-    public TankMeasure copy() {
+    public TankMeasure clone() {
         TankMeasure tankMeasureCopy = new TankMeasure();
         tankMeasureCopy.setDateTime(dateTime);
         tankMeasureCopy.setFuelHeight(fuelHeight);

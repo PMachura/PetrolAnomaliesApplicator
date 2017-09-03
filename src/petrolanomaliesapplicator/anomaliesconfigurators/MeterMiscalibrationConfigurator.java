@@ -13,27 +13,17 @@ import java.time.LocalDateTime;
  */
 public class MeterMiscalibrationConfigurator extends AnomalyConfigurator{
     
-    private Integer tankId;
+
     private Integer gunId;
     private Double miscalibrationCoefficientPerOneCubicMeter;
 
-    public MeterMiscalibrationConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer tankiId, Integer gunId, Double miscalibrationCoefficientPerOneCubicMeter) {
-        super(startDateTime, endDateTime);
+    public MeterMiscalibrationConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer tankId, Integer gunId, Double miscalibrationCoefficientPerOneCubicMeter) {
+        super(startDateTime, endDateTime,tankId);
         this.anomalyTpe = AnomalyType.METER_MISCALIBRATION;
-        this.tankId = tankiId;
         this.gunId = gunId;
         this.miscalibrationCoefficientPerOneCubicMeter = miscalibrationCoefficientPerOneCubicMeter;
     }
 
-    
-    
-    public Integer getTankId() {
-        return tankId;
-    }
-
-    public void setTankId(Integer tankiId) {
-        this.tankId = tankiId;
-    }
 
     public Integer getGunId() {
         return gunId;

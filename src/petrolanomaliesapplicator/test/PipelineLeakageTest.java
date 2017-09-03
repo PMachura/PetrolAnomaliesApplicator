@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package petrolanomaliesapplicator;
+package petrolanomaliesapplicator.test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -22,7 +22,8 @@ import petrolanomaliesapplicator.model.TankMeasure;
 
 
 
-public class LeakageApplicatorTest {
+
+public class PipelineLeakageTest {
     
     static void pipelineLeakageTest(){
         ArrayList<NozzleMeasure> nozzleMeasures = (ArrayList<NozzleMeasure>) FileHandler.loadNozzleMeasures("dane/Zestaw 1/nozzleMeasures.log");

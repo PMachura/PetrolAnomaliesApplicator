@@ -8,6 +8,7 @@ package petrolanomaliesapplicator.anomaliesapplicators;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import petrolanomaliesapplicator.anomaliesconfigurators.ProbeHangConfigurator;
 import petrolanomaliesapplicator.helpers.TimeCalculator;
 import petrolanomaliesapplicator.model.TankMeasure;
 
@@ -19,6 +20,10 @@ public class ProbeHangApplicator extends AnomalyApplicator {
 
     private Double readFuelHeight = null;
     private Double readFuelVolume = null;
+    
+    public ProbeHangApplicator(ProbeHangConfigurator configurator){
+        super(configurator);
+    }
 
     /**
      * Applys probe hang anomaly to given TankMeasure collection Modifies only
@@ -40,12 +45,12 @@ public class ProbeHangApplicator extends AnomalyApplicator {
                 if (readFuelHeight == null) {
                     readFuelHeight = tankMeasure.getFuelHeight();
                 } else {
-                    TankMeasure modifiedTankMeasure = tankMeasure.copy();
+                    TankMeasure modifiedTankMeasure = tankMeasure.clone();
                     modifiedTankMeasure.setFuelHeight(readFuelHeight);
                     modifiedTankMeasures.add(modifiedTankMeasure);
                 }
             } else {
-                modifiedTankMeasures.add(tankMeasure.copy());
+                modifiedTankMeasures.add(tankMeasure.clone());
             }
 
         }
@@ -54,7 +59,7 @@ public class ProbeHangApplicator extends AnomalyApplicator {
 
     public TankMeasure applyPorbeHang(TankMeasure tankMeasure) {
         
-        TankMeasure modifiedTankMeasure = tankMeasure.copy();
+        TankMeasure modifiedTankMeasure = tankMeasure.clone();
         if (tankMeasure.getTankId().equals(tankId)
                 && (TimeCalculator.isDateInRange(startTime, endTime, tankMeasure.getDateTime()))) {
             if (readFuelHeight == null) {

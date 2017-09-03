@@ -3,24 +3,37 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/ConstantLeakageConfigurator.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/AnomalyConfiguratorTest.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/NeuralNetworkTest.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/LeakageApplicatorTest.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/VariableLeakageConfigurator.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/fileshandlers/FileHandler.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/JavaTest.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/FuelHeightVolumeMapper.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/PetrolAnomaliesApplicator.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/MeterMiscalibrationConfigurator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/test/PipelineLeakageTest.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/MapperDataLocation.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/test/ConstantTankLeakageTest.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/AnomalyType.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/ProbeHangApplicator.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/ProbeHangConfigurator.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/helpers/TimeCalculator.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/Test.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/LeakageApplicator.java</file>
-            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/PipelineLeakageConfigurator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/MeterMiscalibrationConfigurator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/test/DataSetFactoryTest.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/DataSetFactory.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/nbproject/build-impl.xml</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/MeterMiscalibrationApplicator.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/TankMeasure.java</file>
             <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/AnomalyConfigurator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/AnomalyApplicator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/ConstantTankLeakageConfigurator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/fileshandlers/FileHandler.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/AnomalyHandler.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/VariableTankLeakageApplicator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/FuelHeightVolumeMapper.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/test/Test.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/helpers/TimeCalculator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/test/NeuralNetworkTest.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/PipelineLeakageApplicator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/FuelHeightVolumeMapperFactory.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/PipelineLeakageConfigurator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesapplicators/ConstantTankLeakageApplicator.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/DataSetCollection.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/test/AnomalyHandlerTest.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/DataSetType.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/model/BaseDataSetLocation.java</file>
+            <file>file:/D:/Programowanie/Projekty/PetrolAnomaliesApplicator/src/petrolanomaliesapplicator/anomaliesconfigurators/VariableTankLeakageConfigurator.java</file>
         </group>
     </open-files>
 </project-private>

@@ -5,10 +5,21 @@
  */
 package petrolanomaliesapplicator.anomaliesapplicators;
 
+import java.time.LocalDateTime;
+import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfigurator;
+
 /**
  *
  * @author Przemek
  */
 public abstract class AnomalyApplicator {
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
+    protected Integer tankId;
     
+    public AnomalyApplicator(AnomalyConfigurator anomalyConfigurator){
+        this.startTime = anomalyConfigurator.getStartDateTime();
+        this.endTime = anomalyConfigurator.getEndDateTime();
+        this.tankId = anomalyConfigurator.getTankId();
+    }
 }

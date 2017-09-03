@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package petrolanomaliesapplicator;
+package petrolanomaliesapplicator.test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,9 +31,9 @@ import org.neuroph.util.TransferFunctionType;
 import petrolanomaliesapplicator.anomaliesapplicators.ConstantTankLeakageApplicator;
 import petrolanomaliesapplicator.anomaliesapplicators.ProbeHangApplicator;
 import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfigurator;
-import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfiguratorCollector;
+import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyHandler;
 import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyType;
-import petrolanomaliesapplicator.anomaliesconfigurators.ConstantLeakageConfigurator;
+import petrolanomaliesapplicator.anomaliesconfigurators.ConstantTankLeakageConfigurator;
 import petrolanomaliesapplicator.anomaliesconfigurators.MeterMiscalibrationConfigurator;
 import petrolanomaliesapplicator.anomaliesconfigurators.ProbeHangConfigurator;
 import petrolanomaliesapplicator.model.FuelHeightVolumeMapper;

@@ -11,24 +11,16 @@ import java.time.LocalDateTime;
  *
  * @author Przemek
  */
-public class VariableLeakageConfigurator extends AnomalyConfigurator{
-    private Integer tankId;
+public class VariableTankLeakageConfigurator extends AnomalyConfigurator{
+
     private Double leakingPointHeight;
 
-    public VariableLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime,Integer tankId, Double leakingPointHeight) {
-        super(startDateTime, endDateTime);
+    public VariableTankLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime,Integer tankId, Double leakingPointHeight) {
+        super(startDateTime, endDateTime, tankId);
         this.anomalyTpe = AnomalyType.VARIABLE_LEAKAGE;
-        this.tankId = tankId;
         this.leakingPointHeight = leakingPointHeight;
     }
 
-    public Integer getTankId() {
-        return tankId;
-    }
-
-    public void setTankId(Integer tankId) {
-        this.tankId = tankId;
-    }
 
     public Double getLeakingPointHeight() {
         return leakingPointHeight;

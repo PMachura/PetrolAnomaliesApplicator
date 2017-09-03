@@ -13,10 +13,12 @@ public abstract class AnomalyConfigurator {
     protected LocalDateTime startDateTime;
     protected LocalDateTime endDateTime;
     protected AnomalyType anomalyTpe;
+    protected Integer tankId;
 
-    public AnomalyConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public AnomalyConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer tankId) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+        this.tankId = tankId;
     }
 
     public LocalDateTime getStartDateTime() {
@@ -42,6 +44,16 @@ public abstract class AnomalyConfigurator {
     public void setAnomalyTpe(AnomalyType anomalyTpe) {
         this.anomalyTpe = anomalyTpe;
     }
+
+    public Integer getTankId() {
+        return tankId;
+    }
+
+    public void setTankId(Integer tankId) {
+        this.tankId = tankId;
+    }
+    
+    
 
     @Override
     public String toString() {

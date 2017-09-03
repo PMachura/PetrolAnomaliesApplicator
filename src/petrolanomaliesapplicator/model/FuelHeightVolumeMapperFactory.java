@@ -24,8 +24,8 @@ public class FuelHeightVolumeMapperFactory {
     private static final String thirdMapFile = "dane/mapowanie/Tank3_30000.csv";
     private static final String fourthMapFile = "dane/mapowanie/Tank4_40000.csv";
 
-    private static final String HeightToVolumeNetworkFileName = "HeightToVolumeNetwork";
-    private static final String VolumeToHeightNetworkFileName = "VolumeToHeightNetwork";
+    private static final String heightToVolumeNetworkFileName = "dane/sieci/HeightToVolumeNetwork";
+    private static final String volumeToHeightNetworkFileName = "dane/sieci/VolumeToHeightNetwork";
 
     private static Set<Integer> allowedMappersIds = new HashSet<Integer>(Arrays.asList(1,2,3,4));
     private static Hashtable<Integer, FuelHeightVolumeMapper> heightToVolumeMappers = new Hashtable<Integer, FuelHeightVolumeMapper>();
@@ -37,13 +37,13 @@ public class FuelHeightVolumeMapperFactory {
             heightToVolumeMappers.put(id, mapper);
             try {
                 System.out.println("TRY");
-                mapper.setNeuralNetwork(loadNeuralNetwork(HeightToVolumeNetworkFileName + id.toString()));
+                mapper.setNeuralNetwork(loadNeuralNetwork(heightToVolumeNetworkFileName + id.toString()));
                 mapper.normalizeMapper();
 
             } catch (Exception e) {
                 System.out.println("CATCH");
                 mapper.initializeNeuralNetwork(0.0001, 100000, 0.5);
-                saveNeuralNetwork(HeightToVolumeNetworkFileName + id.toString(), mapper.getNeuralNetwork());
+                saveNeuralNetwork(heightToVolumeNetworkFileName + id.toString(), mapper.getNeuralNetwork());
 
             }
             return mapper;
@@ -65,13 +65,13 @@ public class FuelHeightVolumeMapperFactory {
             volumeToHeightMappers.put(id, mapper);
             try {
                 System.out.println("TRY");
-                mapper.setNeuralNetwork(loadNeuralNetwork(VolumeToHeightNetworkFileName + id.toString()));
+                mapper.setNeuralNetwork(loadNeuralNetwork(volumeToHeightNetworkFileName + id.toString()));
                 mapper.normalizeMapper();
 
             } catch (Exception e) {
                 System.out.println("CATCH");
                 mapper.initializeNeuralNetwork(0.0001, 100000, 0.5);
-                saveNeuralNetwork(VolumeToHeightNetworkFileName + id.toString(), mapper.getNeuralNetwork());
+                saveNeuralNetwork(volumeToHeightNetworkFileName + id.toString(), mapper.getNeuralNetwork());
 
             }
             return mapper;

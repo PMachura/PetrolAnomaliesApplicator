@@ -8,6 +8,7 @@ package petrolanomaliesapplicator.anomaliesapplicators;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import petrolanomaliesapplicator.anomaliesconfigurators.MeterMiscalibrationConfigurator;
 import petrolanomaliesapplicator.helpers.TimeCalculator;
 import petrolanomaliesapplicator.model.NozzleMeasure;
 
@@ -21,6 +22,14 @@ public class MeterMiscalibrationApplicator extends AnomalyApplicator {
     private Double previousTotalCounter = null;
     private Double totalMeasurementError = 0.0;
     private Integer gunId;
+    
+    public MeterMiscalibrationApplicator(MeterMiscalibrationConfigurator configurator){
+        super(configurator);
+        this.miscalibrationCoefficientPerOneCubicMeter = configurator.getMiscalibrationCoefficientPerOneCubicMeter();
+        this.previousTotalCounter = null;
+        this.totalMeasurementError = new Double(0);
+        this.gunId = configurator.getGunId();
+    }
 
     public static Collection<NozzleMeasure> applyMeterMiscalibration(Collection<NozzleMeasure> nozzleMeasures,
             Integer tankId, Integer gunId, LocalDateTime startTime, LocalDateTime endTime, Double miscalibrationCoefficientPerOneCubicMeter) {

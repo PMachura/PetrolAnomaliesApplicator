@@ -8,6 +8,7 @@ package petrolanomaliesapplicator.anomaliesapplicators;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import petrolanomaliesapplicator.anomaliesconfigurators.VariableTankLeakageConfigurator;
 import petrolanomaliesapplicator.helpers.TimeCalculator;
 import petrolanomaliesapplicator.model.FuelHeightVolumeMapper;
 import petrolanomaliesapplicator.model.FuelHeightVolumeMapperFactory;
@@ -22,6 +23,13 @@ public class VariableTankLeakageApplicator extends AnomalyApplicator {
     private Double leakingPointHeight;
     private Double leakedFuelSum = 0.0;
     private FuelHeightVolumeMapper volumeToHeightMapper;
+    
+    public VariableTankLeakageApplicator(VariableTankLeakageConfigurator configurator){
+        super(configurator);
+        this.leakingPointHeight = configurator.getLeakingPointHeight();
+        this.leakedFuelSum = new Double(0.0);
+        volumeToHeightMapper = FuelHeightVolumeMapperFactory.getVolumeToHeightMapper(tankId);
+    }
     
     /**
      * Apply variable leakage to given TankMeasure dataset which depends on fuel
@@ -46,7 +54,7 @@ public class VariableTankLeakageApplicator extends AnomalyApplicator {
                     && (tankMeasure.getFuelHeight() > leakingPointHeight)
                     && (TimeCalculator.isDateInRange(startTime, endTime, tankMeasure.getDateTime()))) {
 
-                TankMeasure modifiedTankMeasure = tankMeasure.copy();
+                TankMeasure modifiedTankMeasure = tankMeasure.clone();
                 Double elapsedHours = TimeCalculator.durationInHours(startTime, tankMeasure.getDateTime());
                 Double leakedFuel = elapsedHours * leakIntensityVolumeDependinOnTankVolume(tankMeasure.getFuelVolume());
                 modifiedTankMeasure.setFuelVolume(tankMeasure.getFuelVolume() - leakedFuel);
@@ -56,12 +64,12 @@ public class VariableTankLeakageApplicator extends AnomalyApplicator {
                 leakedFuelSum += leakedFuel;
 
             } else if (tankMeasure.getTankId().equals(tankId) && tankMeasure.getDateTime().isAfter(endTime)) {
-                TankMeasure modifiedTankMeasure = tankMeasure.copy();
+                TankMeasure modifiedTankMeasure = tankMeasure.clone();
                 modifiedTankMeasure.setFuelVolume(tankMeasure.getFuelVolume() - leakedFuelSum);
                 modifiedTankMeasure.setFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
                 modifiedTankMeasures.add(modifiedTankMeasure);
             } else {
-                modifiedTankMeasures.add(tankMeasure.copy());
+                modifiedTankMeasures.add(tankMeasure.clone());
             }
 
         }
@@ -70,7 +78,7 @@ public class VariableTankLeakageApplicator extends AnomalyApplicator {
     
     public TankMeasure applyVariableLeakage(TankMeasure tankMeasure){
        
-        TankMeasure modifiedTankMeasure = tankMeasure.copy();     
+        TankMeasure modifiedTankMeasure = tankMeasure.clone();     
         if (tankMeasure.getTankId().equals(tankId)
                     && (tankMeasure.getFuelHeight() > leakingPointHeight)
                     && (TimeCalculator.isDateInRange(startTime, endTime, tankMeasure.getDateTime()))) {

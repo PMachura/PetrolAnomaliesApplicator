@@ -12,43 +12,31 @@ import java.time.LocalDateTime;
  * @author Przemek
  */
 public class PipelineLeakageConfigurator extends AnomalyConfigurator {
-    private Double leakageVolumePerHour;
-    private Double leakingPointHeight;
-    private Integer tankId;
+    private Integer gunId;
+    private Double leakageVolumePerCubicMeter;
 
-    public PipelineLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime,  Double leakageVolumePerHour, Double leakingPointHeight, Integer tankId) {
-        super(startDateTime, endDateTime);
+    public PipelineLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime,Integer tankId, Integer gunId, Double leakageVolumePerCubicMeter) {
+        super(startDateTime, endDateTime, tankId);
         this.anomalyTpe = AnomalyType.PIPELINE_LEAKAGE;
-        this.leakageVolumePerHour = leakageVolumePerHour;
-        this.leakingPointHeight = leakingPointHeight;
-        this.tankId = tankId;
+        this.gunId = gunId;
+        this.leakageVolumePerCubicMeter = leakageVolumePerCubicMeter;
     }
 
-    
-    
-    public Double getLeakageVolumePerHour() {
-        return leakageVolumePerHour;
+    public Integer getGunId() {
+        return gunId;
     }
 
-    public void setLeakageVolumePerHour(Double leakageVolumePerHour) {
-        this.leakageVolumePerHour = leakageVolumePerHour;
+    public void setGunId(Integer gunId) {
+        this.gunId = gunId;
     }
 
-    public Double getLeakingPointHeight() {
-        return leakingPointHeight;
+    public Double getLeakageVolumePerCubicMeter() {
+        return leakageVolumePerCubicMeter;
     }
 
-    public void setLeakingPointHeight(Double leakingPointHeight) {
-        this.leakingPointHeight = leakingPointHeight;
+    public void setLeakageVolumePerCubicMeter(Double leakageVolumePerCubicMeter) {
+        this.leakageVolumePerCubicMeter = leakageVolumePerCubicMeter;
     }
 
-    public Integer getTankId() {
-        return tankId;
-    }
-
-    public void setTankId(Integer tankId) {
-        this.tankId = tankId;
-    }
-    
-    
+      
 }

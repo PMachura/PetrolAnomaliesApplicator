@@ -11,23 +11,14 @@ import java.time.LocalDateTime;
  *
  * @author Przemek
  */
-public class ConstantLeakageConfigurator extends AnomalyConfigurator {
-    private Integer tankId;
+public class ConstantTankLeakageConfigurator extends AnomalyConfigurator {
+
     private Double leakageVolumePerHour;
 
-    public ConstantLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer tankId, Double leakageVolumePerHour) {
-        super(startDateTime, endDateTime);
+    public ConstantTankLeakageConfigurator(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer tankId, Double leakageVolumePerHour) {
+        super(startDateTime, endDateTime, tankId);
         this.anomalyTpe = AnomalyType.CONSTANT_LEAKAGE;
-        this.tankId = tankId;
         this.leakageVolumePerHour = leakageVolumePerHour;
-    }
-
-    public Integer getTankId() {
-        return tankId;
-    }
-
-    public void setTankId(Integer tankId) {
-        this.tankId = tankId;
     }
 
     public Double getLeakageVolumePerHour() {

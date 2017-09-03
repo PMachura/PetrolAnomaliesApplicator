@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
+import petrolanomaliesapplicator.anomaliesconfigurators.ConstantTankLeakageConfigurator;
 
 import petrolanomaliesapplicator.helpers.TimeCalculator;
 import petrolanomaliesapplicator.model.FuelHeightVolumeMapper;
@@ -26,6 +28,12 @@ public class ConstantTankLeakageApplicator extends AnomalyApplicator {
     private FuelHeightVolumeMapper volumeToHeightMapper;
     private Double wholeLeakageVolume;
 
+    public ConstantTankLeakageApplicator(ConstantTankLeakageConfigurator configurator){
+        super(configurator);
+        this.leakageVolumePerHour = configurator.getLeakageVolumePerHour();
+        this.wholeLeakageVolume = TimeCalculator.durationInHours(startTime, endTime) * leakageVolumePerHour;
+        this.volumeToHeightMapper = FuelHeightVolumeMapperFactory.getVolumeToHeightMapper(tankId);
+    }
     /**
      * Applys constant leakage to given TankMeasure collection
      *
@@ -37,39 +45,51 @@ public class ConstantTankLeakageApplicator extends AnomalyApplicator {
      * @return
      */
     public static Collection<TankMeasure> applyConstantTankLeakage(Collection<TankMeasure> tankMeasures,
-            Integer tankId, LocalDateTime startTime, LocalDateTime endTime, Double leakageVolumePerHour) {
+             LocalDateTime startTime, LocalDateTime endTime,Integer tankId, Double leakageVolumePerHour) {
 
         Collection<TankMeasure> modifiedTankMeasures = new ArrayList<TankMeasure>();
+        //Collection<TankMeasure> modified = tankMeasures.stream().map(tankMeasure -> tankMeasure.clone()).collect(Collectors.toCollection(ArrayList::new));
         Double wholeLeakageVolume = TimeCalculator.durationInHours(startTime, endTime) * leakageVolumePerHour;
         FuelHeightVolumeMapper volumeToHeightMapper = FuelHeightVolumeMapperFactory.getVolumeToHeightMapper(tankId);
+        
+ 
 
         for (TankMeasure tankMeasure : tankMeasures) {
             if (tankMeasure.getTankId().equals(tankId)
                     && (TimeCalculator.isDateInRange(startTime, endTime, tankMeasure.getDateTime()))) {
 
-                TankMeasure modifiedTankMeasure = tankMeasure.copy();
+                TankMeasure modifiedTankMeasure = tankMeasure.clone();
                 Double elapsedHours = TimeCalculator.durationInHours(startTime, tankMeasure.getDateTime());
+                System.out.println("HELLLLOOOOO");
+           //     System.out.println(elapsedHours);
+             //   System.out.println(leakageVolumePerHour);
                 modifiedTankMeasure.setFuelVolume(modifiedTankMeasure.getFuelVolume() - elapsedHours * leakageVolumePerHour);
                 modifiedTankMeasure.setFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
                 modifiedTankMeasures.add(modifiedTankMeasure);
 
             } else if (tankMeasure.getTankId().equals(tankId) && tankMeasure.getDateTime().isAfter(endTime)) {
-                TankMeasure modifiedTankMeasure = tankMeasure.copy();
+                TankMeasure modifiedTankMeasure = tankMeasure.clone();
                 modifiedTankMeasure.setFuelVolume(modifiedTankMeasure.getFuelVolume() - wholeLeakageVolume);
                 modifiedTankMeasure.setFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
                 modifiedTankMeasures.add(modifiedTankMeasure);
             } else {
-                modifiedTankMeasures.add(tankMeasure.copy());
+                modifiedTankMeasures.add(tankMeasure.clone());
             }
 
         }
         return modifiedTankMeasures;
 
     }
+    
+    public Collection<TankMeasure> applyConstantTankLeakage(Collection<TankMeasure> tankMeasures) {
+
+        return applyConstantTankLeakage(tankMeasures, startTime, endTime,  tankId, leakageVolumePerHour);
+
+    }
 
     public TankMeasure applyConstantTankLeakage(TankMeasure tankMeasure) {
 
-        TankMeasure modifiedTankMeasure = tankMeasure.copy();
+        TankMeasure modifiedTankMeasure = tankMeasure.clone();
 
         if (tankMeasure.getTankId().equals(tankId)
                 && (TimeCalculator.isDateInRange(startTime, endTime, tankMeasure.getDateTime()))) {
