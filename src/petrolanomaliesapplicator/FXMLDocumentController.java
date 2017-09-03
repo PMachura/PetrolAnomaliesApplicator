@@ -59,21 +59,24 @@ public class FXMLDocumentController implements Initializable {
     @FXML private TextField outputDir;
     
     /* Constant Leakage */
-    @FXML private CheckBox constantTankLeakageApplicator;
+    @FXML private Label constantTankLeakageApplicator;
+    private int constantTankLeakageCount;
     @FXML private TextField constantTankLeakageTankId;
     @FXML private TextField constantTankLeakageValue;
     @FXML private TextField constantTankLeakageDateStart;
     @FXML private TextField constantTankLeakageDateEnd;
     
     /* Variable Leakage */
-    @FXML private CheckBox variableTankLeakageApplicator;
+    @FXML private Label variableTankLeakageApplicator;
+    private int variableTankLeakageCount;
     @FXML private TextField variableTankLeakageTankId;
     @FXML private TextField variableTankLeakagePointHeight;
     @FXML private TextField variableTankLeakageDateStart;
     @FXML private TextField variableTankLeakageDateEnd;
     
     /* Pipeline Leakage */
-    @FXML private CheckBox pipelineTankLeakageApplicator;
+    @FXML private Label pipelineTankLeakageApplicator;
+    private int pipelineTankLeakageCount;
     @FXML private TextField pipelineTankLeakageTankId;
     @FXML private TextField pipelineTankLeakageValuePerCubicMeter;
     @FXML private TextField pipelineTankLeakageGunId;
@@ -81,69 +84,62 @@ public class FXMLDocumentController implements Initializable {
     @FXML private TextField pipelineTankLeakageDateEnd;
     
     /* Probe Hang */
-    @FXML private CheckBox probeHangApplicator;
+    @FXML private Label probeHangApplicator;
+    private int probeHangCount;
     @FXML private TextField probeHangTankId;
     @FXML private TextField probeHangDateStart;
     @FXML private TextField probeHangDateEnd;
     
     /* Meter Miscalibration */
-    @FXML private CheckBox meterMiscalibrationApplicator;
+    @FXML private Label meterMiscalibrationApplicator;
+    private int meterMiscalibrationCount;
     @FXML private TextField meterMiscalibrationTankId;
     @FXML private TextField meterMiscalibrationGunId;
     @FXML private TextField meterMiscalibrationCoefficient;
     @FXML private TextField meterMiscalibrationDateStart;
     @FXML private TextField meterMiscalibrationDateEnd;
     
-    
+    private AnomalyHandler saveAnomalyHandler;
+    private AnomalyHandler loadAnomalyHandler;
     
     @FXML
     private void handleSaveConfiguration(ActionEvent event) {
-        AnomalyHandler anomalyHandler = new AnomalyHandler();
-        anomalyHandler.setInputDataSetFileFolder(fileSet.getValue().toString());
-        anomalyHandler.setOutpuDataSetFileFolder(outputDir.getText());
+        saveAnomalyHandler.setInputDataSetFileFolder(fileSet.getValue().toString());
+        saveAnomalyHandler.setOutpuDataSetFileFolder(outputDir.getText());
         
-        if(constantTankLeakageApplicator.isSelected() == true) {
-            createConstantLeakageConfiguration(anomalyHandler);
-        }
-        if(variableTankLeakageApplicator.isSelected() == true) {
-            createVariableLeakageConfiguration(anomalyHandler);
-        }
-        if(pipelineTankLeakageApplicator.isSelected() == true) {
-            createPipelineLeakageConfiguration(anomalyHandler);
-        }
-        if(probeHangApplicator.isSelected() == true) {
-            createProbeHangConfiguration(anomalyHandler);
-        }
-        if(meterMiscalibrationApplicator.isSelected() == true) {
-            createMeterMiscalibrationConfiguration(anomalyHandler);
-        }
-        
-        FileHandler.saveAnomalyHandlerPropertiesAndConfigurators(configuratorName.getText(), anomalyHandler);
+        FileHandler.saveAnomalyHandlerPropertiesAndConfigurators(configuratorName.getText(), saveAnomalyHandler);
         
         saveSuccess.setText("Save configuration success");
     }
     
-    private void createConstantLeakageConfiguration(AnomalyHandler anomalyHandler) {
+    @FXML
+    private void createConstantLeakageConfiguration(ActionEvent event) {
         AnomalyConfigurator anomalyConfigurator = new ConstantTankLeakageConfigurator(
                 LocalDateTime.parse(constantTankLeakageDateStart.getText()), 
                 LocalDateTime.parse(constantTankLeakageDateEnd.getText()), 
                 Integer.parseInt(constantTankLeakageTankId.getText()), 
                 Double.parseDouble(constantTankLeakageValue.getText())
         );
-        anomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+        saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+        constantTankLeakageCount++;
+        constantTankLeakageApplicator.setText("Added: " + constantTankLeakageCount);
     }
     
-    private void createVariableLeakageConfiguration(AnomalyHandler anomalyHandler) {
+    @FXML
+    private void createVariableLeakageConfiguration(ActionEvent event) {
         AnomalyConfigurator anomalyConfigurator = new VariableTankLeakageConfigurator(
                 LocalDateTime.parse(variableTankLeakageDateStart.getText()), 
                 LocalDateTime.parse(variableTankLeakageDateEnd.getText()), 
                 Integer.parseInt(variableTankLeakageTankId.getText()), 
                 Double.parseDouble(variableTankLeakagePointHeight.getText())
         );
-        anomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+        saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+        variableTankLeakageCount++;
+        variableTankLeakageApplicator.setText("Added: " + variableTankLeakageCount);
     }
     
-    private void createPipelineLeakageConfiguration(AnomalyHandler anomalyHandler) {
+    @FXML
+    private void createPipelineLeakageConfiguration(ActionEvent event) {
         AnomalyConfigurator anomalyConfigurator = new PipelineLeakageConfigurator(
                 LocalDateTime.parse(pipelineTankLeakageDateStart.getText()), 
                 LocalDateTime.parse(pipelineTankLeakageDateEnd.getText()), 
@@ -151,19 +147,25 @@ public class FXMLDocumentController implements Initializable {
                 Integer.parseInt(pipelineTankLeakageGunId.getText()), 
                 Double.parseDouble(pipelineTankLeakageValuePerCubicMeter.getText())
         );
-        anomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+        saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+        pipelineTankLeakageCount++;
+        pipelineTankLeakageApplicator.setText("Added: " + pipelineTankLeakageCount);
     }
     
-    private void createProbeHangConfiguration(AnomalyHandler anomalyHandler) {
+    @FXML
+    private void createProbeHangConfiguration(ActionEvent event) {
         AnomalyConfigurator anomalyConfigurator = new ProbeHangConfigurator(
                 LocalDateTime.parse(probeHangDateStart.getText()), 
                 LocalDateTime.parse(probeHangDateEnd.getText()), 
                 Integer.parseInt(probeHangTankId.getText())
         );
-        anomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+        saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+        probeHangCount++;
+        probeHangApplicator.setText("Added: " + probeHangCount);
     }
     
-    private void createMeterMiscalibrationConfiguration(AnomalyHandler anomalyHandler) {
+    @FXML
+    private void createMeterMiscalibrationConfiguration(ActionEvent event) {
         AnomalyConfigurator anomalyConfigurator = new MeterMiscalibrationConfigurator(
                 LocalDateTime.parse(meterMiscalibrationDateStart.getText()), 
                 LocalDateTime.parse(meterMiscalibrationDateEnd.getText()), 
@@ -171,30 +173,34 @@ public class FXMLDocumentController implements Initializable {
                 Integer.parseInt(meterMiscalibrationGunId.getText()), 
                 Double.parseDouble(meterMiscalibrationCoefficient.getText())
         );
-        anomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+        saveAnomalyHandler.addAnomalyConfigurator(anomalyConfigurator);
+        meterMiscalibrationCount++;
+        meterMiscalibrationApplicator.setText("Added: " + meterMiscalibrationCount);
     }
     
     @FXML
     private void handleLoadConfiguration(ActionEvent event) {
-        AnomalyHandler anomalyHandler = FileHandler.loadAnomalyHandlerPropertiesAndConfigurators(configuratorNameLoad.getText());
-        for(AnomalyConfigurator configurator : anomalyHandler.getAnomaliesConfigurators()){
+        loadAnomalyHandler = FileHandler.loadAnomalyHandlerPropertiesAndConfigurators(configuratorNameLoad.getText()); 
+        for(AnomalyConfigurator configurator : loadAnomalyHandler.getAnomaliesConfigurators()){
                 System.out.println(configurator);
-        } 
+        }
         loadSuccess.setText("Load configuration success");
     }
     
     
     @FXML
     private void handleStartApplication(ActionEvent event) {       
-
+        
     }
       
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        saveAnomalyHandler = new AnomalyHandler();
         fileSet.setItems(FXCollections.observableArrayList(
             "Zestaw 1", "Zestaw 2", "Zestaw 3"
         ));
+        constantTankLeakageCount = 0;
     }    
     
 }
