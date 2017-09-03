@@ -47,6 +47,7 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML private Label saveSuccess;
     @FXML private Label loadSuccess;
+    @FXML private Label applySuccess;
     
     /* File Set */
     @FXML private ChoiceBox fileSet;
@@ -181,16 +182,15 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleLoadConfiguration(ActionEvent event) {
         loadAnomalyHandler = FileHandler.loadAnomalyHandlerPropertiesAndConfigurators(configuratorNameLoad.getText()); 
-        for(AnomalyConfigurator configurator : loadAnomalyHandler.getAnomaliesConfigurators()){
-                System.out.println(configurator);
-        }
         loadSuccess.setText("Load configuration success");
     }
     
     
     @FXML
     private void handleStartApplication(ActionEvent event) {       
-        
+        loadAnomalyHandler.applyAnomalies();
+        loadAnomalyHandler.saveOutputDataSet();
+        applySuccess.setText("Apply anomalies and save success");
     }
       
     
