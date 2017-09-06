@@ -7,9 +7,9 @@ package petrolanomaliesapplicator.test;
 
 import petrolanomaliesapplicator.fileshandlers.FileHandler;
 
-import petrolanomaliesapplicator.model.FuelHeightVolumeMapper;
-import petrolanomaliesapplicator.model.FuelHeightVolumeMapper;
-import petrolanomaliesapplicator.model.FuelHeightVolumeMapperFactory;
+import petrolanomaliesapplicator.service.FuelHeightVolumeMapper;
+import petrolanomaliesapplicator.service.FuelHeightVolumeMapper;
+import petrolanomaliesapplicator.factory.FuelHeightVolumeMapperFactory;
 
 /**
  *

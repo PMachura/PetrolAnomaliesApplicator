@@ -14,6 +14,7 @@ import petrolanomaliesapplicator.anomaliesapplicators.PipelineLeakageApplicator;
 import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyConfigurator;
 import petrolanomaliesapplicator.anomaliesconfigurators.ConstantTankLeakageConfigurator;
 import petrolanomaliesapplicator.fileshandlers.FileHandler;
+import petrolanomaliesapplicator.service.ModelDataCollectionHelper;
 import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.TankMeasure;
 
@@ -25,15 +26,27 @@ public class ConstantTankLeakageTest {
 
     static void test() {
         ArrayList<TankMeasure> tankMeasures = (ArrayList<TankMeasure>) FileHandler.loadTankMeasures("dane/Zestaw 1/tankMeasures.log");
-        AnomalyConfigurator anomalyConfigurator = new ConstantTankLeakageConfigurator(LocalDateTime.of(2014, 1, 1, 0, 5, 0), LocalDateTime.of(2014, 1, 1, 0, 15, 0), 1, 5.0);
+
+        LocalDateTime start = LocalDateTime.of(2014, 1, 1, 0, 30, 0);
+        LocalDateTime end = LocalDateTime.of(2014, 1, 1, 2, 30, 0);
+        Integer tankId = 1;
+        Double leakageVolumePerHour = 20.0;
+
+        AnomalyConfigurator anomalyConfigurator = new ConstantTankLeakageConfigurator(start, end, tankId, leakageVolumePerHour);
         ConstantTankLeakageApplicator applicator = new ConstantTankLeakageApplicator((ConstantTankLeakageConfigurator) anomalyConfigurator);
-        //ArrayList<TankMeasure> modifiedTankMeasures = (ArrayList<TankMeasure>) applicator.applyConstantTankLeakage(tankMeasures);
-        //  ConstantTankLeakageApplicator.applyConstantTankLeakage(tankMeasures, LocalDateTime.of(2014,1,1,0,5,0),  LocalDateTime.of(2014,1,1,0,15,0),1,5.0);
 
-        for (TankMeasure tankMeasure : tankMeasures) {
-            System.out.println(applicator.applyConstantTankLeakage(tankMeasure));
-        }
+        ArrayList<TankMeasure> modifiedTankMeasures = (ArrayList<TankMeasure>) applicator.applyConstantTankLeakage(tankMeasures);
 
+        ArrayList<TankMeasure> modifiedSelectedTankTankMeasures = ModelDataCollectionHelper.getMatching(modifiedTankMeasures, start.minusHours(1), end.plusHours(1), tankId);
+        ArrayList<TankMeasure> selectedTankTankMeasures = ModelDataCollectionHelper.getMatching(tankMeasures, start.minusHours(1), end.plusHours(1), tankId);
+
+        FileHandler.saveTankMeasuresToFileSuitableForExcel(selectedTankTankMeasures, "selectedTankTankMeasures.txt");
+        FileHandler.saveTankMeasuresToFileSuitableForExcel(modifiedSelectedTankTankMeasures, "modifiedSelectedTankTankMeasures.txt");
+//  ConstantTankLeakageApplicator.applyConstantTankLeakage(tankMeasures, LocalDateTime.of(2014,1,1,0,5,0),  LocalDateTime.of(2014,1,1,0,15,0),1,5.0);
+
+        //    for (TankMeasure tankMeasure : tankMeasures) {
+        //      System.out.println(applicator.applyConstantTankLeakage(tankMeasure));
+        //  }
         //  for (TankMeasure tankMeasure : modifiedTankMeasures) {
         //     System.out.println(tankMeasure);
         //   }

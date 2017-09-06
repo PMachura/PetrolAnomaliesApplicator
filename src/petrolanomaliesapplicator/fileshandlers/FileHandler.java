@@ -58,6 +58,7 @@ public class FileHandler {
     static final String configuratorsPath = "dane/konfiguratory/";
     static final String dataSetPath = "dane/";
     static final String configuratorsFileName = "configurators.txt";
+    static final String resultPath ="rezultaty/";
 
     static File file;
     static FileInputStream fileInputStream;
@@ -197,6 +198,14 @@ public class FileHandler {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void saveNozzleMEasuresToFileSuitableForExcel(Collection<NozzleMeasure> dataCollection, String fileName) {
+        try {
+            NozzleMeasureFileHandler.saveDataSuitableForExcel((Collection<NozzleMeasure>) dataCollection, resultPath + fileName);
+        } catch (IOException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public static void saveTankMeasuresToFile(Collection<TankMeasure> dataCollection, String fileName) {
         try {
@@ -205,10 +214,18 @@ public class FileHandler {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void saveTankMeasuresToFileSuitableForExcel(Collection<TankMeasure> dataCollection, String fileName) {
+        try {
+            TankMeasureFileHandler.saveDataSuitableForExcel((Collection<TankMeasure>) dataCollection, resultPath + fileName);
+        } catch (IOException ex) {
+            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public static void saveRefuelMeasuresToFile(Collection<RefuelMeasure> dataCollection, String fileName) {
         try {
-            RefuelMeasureFileHandler.saveData((Collection<RefuelMeasure>) dataCollection, fileName);
+            RefuelMeasureFileHandler.saveData((Collection<RefuelMeasure>) dataCollection,fileName);
         } catch (IOException ex) {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -290,6 +307,10 @@ public class FileHandler {
     private static void writeSemicolonToFile(BufferedWriter bufferedWriter) throws IOException {
         bufferedWriter.write(";");
     }
+    
+    private static void writeTabulatorToFile(BufferedWriter bufferedWriter) throws IOException {
+        bufferedWriter.write("\t");
+    }
 
     private static LocalDateTime toDate(String date) {
         return (date == null || date.isEmpty()) ? null : LocalDateTime.parse(date, dateTimeFormatter);
@@ -362,6 +383,40 @@ public class FileHandler {
 
             bufferedWriter.close();
         }
+        
+        public static void saveDataSuitableForExcel(Collection<TankMeasure> tankMeasures, String fileName) throws IOException {
+
+            File file = new File(fileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+
+            tankMeasures.forEach((TankMeasure tankMeasure) -> {
+
+                try {
+                    writeValueToFile(tankMeasure.getDateTime(), bufferedWriter);
+                    writeTabulatorToFile(bufferedWriter);
+                   // writeValueToFile(tankMeasure.getLocationId(), bufferedWriter);
+                    //writeTabulatorToFile(bufferedWriter);
+                  //  writeValueToFile(tankMeasure.getMeterId(), bufferedWriter);
+                  //  writeTabulatorToFile(bufferedWriter);
+                    writeValueToFile(tankMeasure.getTankId(), bufferedWriter);
+                    writeTabulatorToFile(bufferedWriter);
+                    writeValueToFile(tankMeasure.getFuelHeight(), bufferedWriter);
+                    writeTabulatorToFile(bufferedWriter);
+                    writeValueToFile(tankMeasure.getFuelVolume(), bufferedWriter);
+                    writeTabulatorToFile(bufferedWriter);
+                    writeValueToFile(tankMeasure.getFuelTemperature(), bufferedWriter);
+
+                    bufferedWriter.newLine();
+
+                } catch (IOException ex) {
+                    Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+            );
+
+            bufferedWriter.close();
+        }
 
         private static TankMeasure initializeTankMeasureFromStringFieldsList(String[] fields) throws ParseException {
 
@@ -403,6 +458,40 @@ public class FileHandler {
                     writeSemicolonToFile(bufferedWriter);
                     writeValueToFile(nozzleMeasure.getTotalCounter(), bufferedWriter);
                     writeSemicolonToFile(bufferedWriter);
+                    writeValueToFile(nozzleMeasure.getStatus(), bufferedWriter);
+
+                    bufferedWriter.newLine();
+
+                } catch (IOException ex) {
+                    Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+            );
+
+            bufferedWriter.close();
+        }
+        
+        public static void saveDataSuitableForExcel(Collection<NozzleMeasure> nozzleMeasures, String fileName) throws IOException {
+
+            File file = new File(fileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+
+            nozzleMeasures.forEach((NozzleMeasure nozzleMeasure) -> {
+
+                try {
+                    writeValueToFile(nozzleMeasure.getDateTime(), bufferedWriter);
+                    writeTabulatorToFile(bufferedWriter);
+                    //writeValueToFile(nozzleMeasure.getLocationId(), bufferedWriter);
+                   // writeSemicolonToFile(bufferedWriter);
+                    writeValueToFile(nozzleMeasure.getGunId(), bufferedWriter);
+                    writeTabulatorToFile(bufferedWriter);
+                    writeValueToFile(nozzleMeasure.getTankId(), bufferedWriter);
+                    writeTabulatorToFile(bufferedWriter);
+                    writeValueToFile(nozzleMeasure.getLiterCounter(), bufferedWriter);
+                    writeTabulatorToFile(bufferedWriter);
+                    writeValueToFile(nozzleMeasure.getTotalCounter(), bufferedWriter);
+                    writeTabulatorToFile(bufferedWriter);
                     writeValueToFile(nozzleMeasure.getStatus(), bufferedWriter);
 
                     bufferedWriter.newLine();
@@ -604,7 +693,6 @@ public class FileHandler {
             writeValueToFile(anomalyConfigurator.getEndDateTime(), bufferedWriter);
             writeSemicolonToFile(bufferedWriter);
             writeValueToFile(anomalyConfigurator.getTankId(), bufferedWriter);
-            System.out.println("Tank id " + anomalyConfigurator.getTankId());
             writeSemicolonToFile(bufferedWriter);
         }
 

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import petrolanomaliesapplicator.anomaliesconfigurators.MeterMiscalibrationConfigurator;
-import petrolanomaliesapplicator.helpers.TimeCalculator;
+import petrolanomaliesapplicator.service.TimeCalculator;
 import petrolanomaliesapplicator.model.NozzleMeasure;
 
 /**
@@ -22,8 +22,8 @@ public class MeterMiscalibrationApplicator extends AnomalyApplicator {
     private Double previousTotalCounter = null;
     private Double totalMeasurementError = 0.0;
     private Integer gunId;
-    
-    public MeterMiscalibrationApplicator(MeterMiscalibrationConfigurator configurator){
+
+    public MeterMiscalibrationApplicator(MeterMiscalibrationConfigurator configurator) {
         super(configurator);
         this.miscalibrationCoefficientPerOneCubicMeter = configurator.getMiscalibrationCoefficientPerOneCubicMeter();
         this.previousTotalCounter = null;
@@ -41,17 +41,15 @@ public class MeterMiscalibrationApplicator extends AnomalyApplicator {
         for (NozzleMeasure nozzleMeasure : nozzleMeasures) {
             if (nozzleMeasure.getTankId().equals(tankId)
                     && nozzleMeasure.getGunId().equals(gunId)
-                    && (nozzleMeasure.getDateTime().isEqual(startTime)
-                    || nozzleMeasure.getDateTime().isEqual(endTime)
-                    || (nozzleMeasure.getDateTime().isAfter(startTime) && nozzleMeasure.getDateTime().isBefore(endTime)))) {
+                    && (TimeCalculator.isDateInRange(startTime, endTime, nozzleMeasure.getDateTime()))) {
 
                 NozzleMeasure modifiedNozzleMeasure = nozzleMeasure.copy();
 
                 Double measurementErrorForTotalCounter = calculateNozzleMeasurementError(previousTotalCounter, nozzleMeasure.getTotalCounter(), miscalibrationCoefficientPerOneCubicMeter);
-                modifiedNozzleMeasure.setTotalCounter(nozzleMeasure.getTotalCounter() + measurementErrorForTotalCounter + totalMeasurementError);
+                modifiedNozzleMeasure.verifySetTotalCounter(nozzleMeasure.getTotalCounter() + measurementErrorForTotalCounter + totalMeasurementError);
 
                 Double measurementErrorForLiterCounter = calculateNozzleMeasurementError(0.0, nozzleMeasure.getLiterCounter(), miscalibrationCoefficientPerOneCubicMeter);
-                modifiedNozzleMeasure.setLiterCounter(nozzleMeasure.getLiterCounter() + measurementErrorForLiterCounter);
+                modifiedNozzleMeasure.verifySetLiterCounter(nozzleMeasure.getLiterCounter() + measurementErrorForLiterCounter);
 
                 modifiedNozzleMeasures.add(modifiedNozzleMeasure);
 
@@ -62,18 +60,21 @@ public class MeterMiscalibrationApplicator extends AnomalyApplicator {
                     && nozzleMeasure.getGunId().equals(gunId)
                     && nozzleMeasure.getDateTime().isAfter(endTime)) {
                 NozzleMeasure modifiedNozzleMeasure = nozzleMeasure.copy();
-                modifiedNozzleMeasure.setTotalCounter(nozzleMeasure.getTotalCounter() + totalMeasurementError);
+                modifiedNozzleMeasure.verifySetTotalCounter(nozzleMeasure.getTotalCounter() + totalMeasurementError);
                 modifiedNozzleMeasures.add(modifiedNozzleMeasure);
-            } else {
+            } else if (nozzleMeasure.getTankId().equals(tankId)
+                    && nozzleMeasure.getGunId().equals(gunId)) {
                 modifiedNozzleMeasures.add(nozzleMeasure);
                 previousTotalCounter = nozzleMeasure.getTotalCounter();
+            } else {
+                modifiedNozzleMeasures.add(nozzleMeasure);
             }
 
         }
         return modifiedNozzleMeasures;
     }
-    
-    public Collection<NozzleMeasure> applyMeterMiscalibration(Collection<NozzleMeasure> nozzleMeasures){
+
+    public Collection<NozzleMeasure> applyMeterMiscalibration(Collection<NozzleMeasure> nozzleMeasures) {
         return applyMeterMiscalibration(nozzleMeasures, tankId, gunId, startTime, endTime, miscalibrationCoefficientPerOneCubicMeter);
     }
 
@@ -86,10 +87,10 @@ public class MeterMiscalibrationApplicator extends AnomalyApplicator {
                 && TimeCalculator.isDateInRange(startTime, endTime, nozzleMeasure.getDateTime())) {
 
             Double measurementErrorForTotalCounter = calculateNozzleMeasurementError(previousTotalCounter, nozzleMeasure.getTotalCounter(), miscalibrationCoefficientPerOneCubicMeter);
-            modifiedNozzleMeasure.setTotalCounter(nozzleMeasure.getTotalCounter() + measurementErrorForTotalCounter + totalMeasurementError);
+            modifiedNozzleMeasure.verifySetTotalCounter(nozzleMeasure.getTotalCounter() + measurementErrorForTotalCounter + totalMeasurementError);
 
             Double measurementErrorForLiterCounter = calculateNozzleMeasurementError(0.0, nozzleMeasure.getLiterCounter(), miscalibrationCoefficientPerOneCubicMeter);
-            modifiedNozzleMeasure.setLiterCounter(nozzleMeasure.getLiterCounter() + measurementErrorForLiterCounter);
+            modifiedNozzleMeasure.verifySetLiterCounter(nozzleMeasure.getLiterCounter() + measurementErrorForLiterCounter);
 
             totalMeasurementError += measurementErrorForTotalCounter;
             previousTotalCounter = nozzleMeasure.getTotalCounter();
@@ -97,8 +98,9 @@ public class MeterMiscalibrationApplicator extends AnomalyApplicator {
         } else if (nozzleMeasure.getTankId().equals(tankId)
                 && nozzleMeasure.getGunId().equals(gunId)
                 && nozzleMeasure.getDateTime().isAfter(endTime)) {
-            modifiedNozzleMeasure.setTotalCounter(nozzleMeasure.getTotalCounter() + totalMeasurementError);
-        } else {
+            modifiedNozzleMeasure.verifySetTotalCounter(nozzleMeasure.getTotalCounter() + totalMeasurementError);
+        } else if(nozzleMeasure.getTankId().equals(tankId)
+                && nozzleMeasure.getGunId().equals(gunId)){
             previousTotalCounter = nozzleMeasure.getTotalCounter();
         }
         return modifiedNozzleMeasure;

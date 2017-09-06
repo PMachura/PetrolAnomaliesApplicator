@@ -17,7 +17,7 @@ import petrolanomaliesapplicator.anomaliesapplicators.VariableTankLeakageApplica
 import petrolanomaliesapplicator.fileshandlers.FileHandler;
 import petrolanomaliesapplicator.model.BaseDataSetLocation;
 import petrolanomaliesapplicator.model.DataSetCollection;
-import petrolanomaliesapplicator.model.DataSetFactory;
+import petrolanomaliesapplicator.factory.DataSetFactory;
 import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.TankMeasure;
 

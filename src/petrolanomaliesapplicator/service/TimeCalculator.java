@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package petrolanomaliesapplicator.helpers;
+package petrolanomaliesapplicator.service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

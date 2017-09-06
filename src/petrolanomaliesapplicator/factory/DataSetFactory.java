@@ -3,11 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package petrolanomaliesapplicator.model;
+package petrolanomaliesapplicator.factory;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import petrolanomaliesapplicator.fileshandlers.FileHandler;
+import petrolanomaliesapplicator.model.DataSetCollection;
+import petrolanomaliesapplicator.model.NozzleMeasure;
+import petrolanomaliesapplicator.model.RefuelMeasure;
+import petrolanomaliesapplicator.model.TankMeasure;
 
 /**
  *

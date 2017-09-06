@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package petrolanomaliesapplicator.model;
+package petrolanomaliesapplicator.factory;
 
+import petrolanomaliesapplicator.service.FuelHeightVolumeMapper;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -36,12 +37,10 @@ public class FuelHeightVolumeMapperFactory {
             FuelHeightVolumeMapper mapper = new FuelHeightVolumeMapper(FileHandler.loadHeightToVolumeMapper(getMapDataFileName(id)));
             heightToVolumeMappers.put(id, mapper);
             try {
-                System.out.println("TRY");
                 mapper.setNeuralNetwork(loadNeuralNetwork(heightToVolumeNetworkFileName + id.toString()));
                 mapper.normalizeMapper();
 
             } catch (Exception e) {
-                System.out.println("CATCH");
                 mapper.initializeNeuralNetwork(0.0001, 100000, 0.5);
                 saveNeuralNetwork(heightToVolumeNetworkFileName + id.toString(), mapper.getNeuralNetwork());
 
@@ -64,12 +63,10 @@ public class FuelHeightVolumeMapperFactory {
             FuelHeightVolumeMapper mapper = new FuelHeightVolumeMapper(FileHandler.loadVolumeToHeightMapper(getMapDataFileName(id)));
             volumeToHeightMappers.put(id, mapper);
             try {
-                System.out.println("TRY");
                 mapper.setNeuralNetwork(loadNeuralNetwork(volumeToHeightNetworkFileName + id.toString()));
                 mapper.normalizeMapper();
 
             } catch (Exception e) {
-                System.out.println("CATCH");
                 mapper.initializeNeuralNetwork(0.0001, 100000, 0.5);
                 saveNeuralNetwork(volumeToHeightNetworkFileName + id.toString(), mapper.getNeuralNetwork());
 

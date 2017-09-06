@@ -36,7 +36,7 @@ import petrolanomaliesapplicator.anomaliesconfigurators.AnomalyType;
 import petrolanomaliesapplicator.anomaliesconfigurators.ConstantTankLeakageConfigurator;
 import petrolanomaliesapplicator.anomaliesconfigurators.MeterMiscalibrationConfigurator;
 import petrolanomaliesapplicator.anomaliesconfigurators.ProbeHangConfigurator;
-import petrolanomaliesapplicator.model.FuelHeightVolumeMapper;
+import petrolanomaliesapplicator.service.FuelHeightVolumeMapper;
 import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.RefuelMeasure;
 import petrolanomaliesapplicator.model.TankMeasure;

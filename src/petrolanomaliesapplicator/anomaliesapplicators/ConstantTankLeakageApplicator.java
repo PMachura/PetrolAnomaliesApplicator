@@ -12,9 +12,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import petrolanomaliesapplicator.anomaliesconfigurators.ConstantTankLeakageConfigurator;
 
-import petrolanomaliesapplicator.helpers.TimeCalculator;
-import petrolanomaliesapplicator.model.FuelHeightVolumeMapper;
-import petrolanomaliesapplicator.model.FuelHeightVolumeMapperFactory;
+import petrolanomaliesapplicator.service.TimeCalculator;
+import petrolanomaliesapplicator.service.FuelHeightVolumeMapper;
+import petrolanomaliesapplicator.factory.FuelHeightVolumeMapperFactory;
 import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.TankMeasure;
 
@@ -59,17 +59,14 @@ public class ConstantTankLeakageApplicator extends AnomalyApplicator {
 
                 TankMeasure modifiedTankMeasure = tankMeasure.clone();
                 Double elapsedHours = TimeCalculator.durationInHours(startTime, tankMeasure.getDateTime());
-                System.out.println("HELLLLOOOOO");
-           //     System.out.println(elapsedHours);
-             //   System.out.println(leakageVolumePerHour);
-                modifiedTankMeasure.setFuelVolume(modifiedTankMeasure.getFuelVolume() - elapsedHours * leakageVolumePerHour);
-                modifiedTankMeasure.setFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
+                modifiedTankMeasure.verifySetFuelVolume(modifiedTankMeasure.getFuelVolume() - elapsedHours * leakageVolumePerHour);
+                modifiedTankMeasure.verifySetFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
                 modifiedTankMeasures.add(modifiedTankMeasure);
 
             } else if (tankMeasure.getTankId().equals(tankId) && tankMeasure.getDateTime().isAfter(endTime)) {
                 TankMeasure modifiedTankMeasure = tankMeasure.clone();
-                modifiedTankMeasure.setFuelVolume(modifiedTankMeasure.getFuelVolume() - wholeLeakageVolume);
-                modifiedTankMeasure.setFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
+                modifiedTankMeasure.verifySetFuelVolume(modifiedTankMeasure.getFuelVolume() - wholeLeakageVolume);
+                modifiedTankMeasure.verifySetFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
                 modifiedTankMeasures.add(modifiedTankMeasure);
             } else {
                 modifiedTankMeasures.add(tankMeasure.clone());
@@ -93,12 +90,12 @@ public class ConstantTankLeakageApplicator extends AnomalyApplicator {
         if (tankMeasure.getTankId().equals(tankId)
                 && (TimeCalculator.isDateInRange(startTime, endTime, tankMeasure.getDateTime()))) {
             Double elapsedHours = TimeCalculator.durationInHours(startTime, tankMeasure.getDateTime());
-            modifiedTankMeasure.setFuelVolume(modifiedTankMeasure.getFuelVolume() - elapsedHours * leakageVolumePerHour);
-            modifiedTankMeasure.setFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
+            modifiedTankMeasure.verifySetFuelVolume(modifiedTankMeasure.getFuelVolume() - elapsedHours * leakageVolumePerHour);
+            modifiedTankMeasure.verifySetFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
 
-        } else if (tankMeasure.getTankId().equals(tankId) && tankMeasure.getDateTime().isAfter(endTime)) {
-            modifiedTankMeasure.setFuelVolume(modifiedTankMeasure.getFuelVolume() - wholeLeakageVolume);
-            modifiedTankMeasure.setFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
+        } else if (tankMeasure.getTankId().equals(tankId) && tankMeasure.getDateTime().isAfter(startTime)) {
+            modifiedTankMeasure.verifySetFuelVolume(modifiedTankMeasure.getFuelVolume() - wholeLeakageVolume);
+            modifiedTankMeasure.verifySetFuelHeight(volumeToHeightMapper.calculate(modifiedTankMeasure.getFuelVolume()));
         }
 
         return modifiedTankMeasure;

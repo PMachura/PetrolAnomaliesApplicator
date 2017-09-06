@@ -83,16 +83,25 @@ public class NozzleMeasure {
         return literCounter;
     }
 
-    public void setLiterCounter(Double literCounter) {
-        this.literCounter = literCounter;
+    public void verifySetLiterCounter(Double literCounter) {
+        if(literCounter >=0.0){
+            this.literCounter = literCounter;
+        }else{
+            this.literCounter = 0.0;
+        }
+        
     }
 
     public Double getTotalCounter() {
         return totalCounter;
     }
 
-    public void setTotalCounter(Double totalCounter) {
-        this.totalCounter = totalCounter;
+    public void verifySetTotalCounter(Double totalCounter) {
+        if(totalCounter >= 0.0){
+            this.totalCounter = totalCounter;
+        }else{
+            this.totalCounter = 0.0;
+        }
     }
 
     public Integer getStatus() {

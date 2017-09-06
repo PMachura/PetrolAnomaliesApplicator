@@ -34,7 +34,7 @@ import petrolanomaliesapplicator.anomaliesconfigurators.VariableTankLeakageConfi
 import petrolanomaliesapplicator.fileshandlers.FileHandler;
 import petrolanomaliesapplicator.model.BaseDataSetLocation;
 import petrolanomaliesapplicator.model.DataSetCollection;
-import petrolanomaliesapplicator.model.DataSetFactory;
+import petrolanomaliesapplicator.factory.DataSetFactory;
 import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.RefuelMeasure;
 import petrolanomaliesapplicator.model.TankMeasure;
@@ -107,7 +107,7 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleSaveConfiguration(ActionEvent event) {
-        if(fileSet.getValue() == null
+        if(fileSet.getValue() != null
         && !outputDir.getText().isEmpty() 
         && !configuratorName.getText().isEmpty()) {
             saveAnomalyHandler.setInputDataSetFileFolder(fileSet.getValue().toString());

@@ -12,9 +12,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import petrolanomaliesapplicator.anomaliesconfigurators.PipelineLeakageConfigurator;
-import petrolanomaliesapplicator.helpers.TimeCalculator;
-import petrolanomaliesapplicator.model.FuelHeightVolumeMapper;
-import petrolanomaliesapplicator.model.FuelHeightVolumeMapperFactory;
+import petrolanomaliesapplicator.service.TimeCalculator;
+import petrolanomaliesapplicator.service.FuelHeightVolumeMapper;
+import petrolanomaliesapplicator.factory.FuelHeightVolumeMapperFactory;
 import petrolanomaliesapplicator.model.NozzleMeasure;
 import petrolanomaliesapplicator.model.TankMeasure;
 
@@ -69,7 +69,7 @@ public class PipelineLeakageApplicator extends AnomalyApplicator {
         for (TankMeasure tankMeasure : tankMeasures) {
             modifiedTankMeasures.add(tankMeasure.clone());
         }
-        
+
         for (ArrayList<NozzleMeasure> nozzleMeasureSeries : nozzleMesuresRefuelingSeries) {
             if (!nozzleMeasureSeries.isEmpty()) {
 
@@ -94,37 +94,40 @@ public class PipelineLeakageApplicator extends AnomalyApplicator {
 
     }
 
-    // Tu powinno być jeszcze tankId
-    // Co dorobić - jakiegoś helpera, który bierze np tankMeasure i odejmuje od jego fuelVolume wartość i ją ustawia w tym tankMeasure
-    // Zmienić tak by funkcje nie generowały nowego zestawu danych, tylko modyfikowały już istniejący
-    // Zmienić tak by funkcje nie przeglądały za każdym razem całego zestawu daych kilka razy, tylko np. wyslekecjonowac dane na których będziemy operować
-    // np. na podstawie kryterium czasu
     private static Collection<TankMeasure> applyVolumeLeakageInTime(Collection<TankMeasure> tankMeasures, LocalDateTime startTime, LocalDateTime endTime,
             Integer tankId, Double leakedFuelVolume, Double totalLeakedFuelVolume) {
 
+        FuelHeightVolumeMapper volumeToHeightMapper = FuelHeightVolumeMapperFactory.getVolumeToHeightMapper(tankId);
         ArrayList<TankMeasure> tankMeasuresInDateRange = new ArrayList<TankMeasure>();
+        boolean isLastTankMeasureAdded = false;
+
         for (TankMeasure tankMeasure : tankMeasures) {
             if (TimeCalculator.isDateInRange(startTime, endTime, tankMeasure.getDateTime()) && tankMeasure.getTankId().equals(tankId)) {
                 tankMeasuresInDateRange.add(tankMeasure);
             }
             if (tankMeasure.getDateTime().isAfter(endTime)) {
-                tankMeasuresInDateRange.add(tankMeasure);
-                break;
+                if (isLastTankMeasureAdded) {
+                    tankMeasure.verifySetFuelVolume(tankMeasure.getFuelVolume() - leakedFuelVolume);
+                    tankMeasure.verifySetFuelHeight(volumeToHeightMapper.calculate(tankMeasure.getFuelVolume()));
+                } else {
+                    tankMeasuresInDateRange.add(tankMeasure);
+                    isLastTankMeasureAdded = true;
+                }
+
             }
         }
 
-        // Tutaj Musi być dodana zmiana wyskokości paliwa
         if (!tankMeasuresInDateRange.isEmpty()) {
-            FuelHeightVolumeMapper volumeToHeightMapper = FuelHeightVolumeMapperFactory.getVolumeToHeightMapper(tankId);
-            System.out.println("Aplikuje wyciek");
+
             Double totalLeakageInSerie = 0.0;
             Double leakageVolumePerOneMeasurement = leakedFuelVolume / tankMeasuresInDateRange.size();
             for (TankMeasure tankMeasure : tankMeasuresInDateRange) {
-                System.out.println("Przed " + tankMeasure);
+
                 totalLeakageInSerie += leakageVolumePerOneMeasurement;
-                tankMeasure.setFuelVolume(tankMeasure.getFuelVolume() - totalLeakageInSerie - totalLeakedFuelVolume);
-                tankMeasure.setFuelHeight(volumeToHeightMapper.calculate(tankMeasure.getFuelVolume()));
-                System.out.println("Po " + tankMeasure);
+              //  tankMeasure.setFuelVolume(tankMeasure.getFuelVolume() - totalLeakageInSerie - totalLeakedFuelVolume);
+              tankMeasure.verifySetFuelVolume(tankMeasure.getFuelVolume() - totalLeakageInSerie);
+                tankMeasure.verifySetFuelHeight(volumeToHeightMapper.calculate(tankMeasure.getFuelVolume()));
+
             }
         }
 
@@ -147,11 +150,11 @@ public class PipelineLeakageApplicator extends AnomalyApplicator {
                     refuelingStartNozzleMeasure = nozzleMeasure;
                     nozzleMesuresRefuelingSeries.add(new ArrayList<NozzleMeasure>());
                     nozzleMesuresRefuelingSeries.get(nozzleMesuresRefuelingSeries.size() - 1).add(nozzleMeasure);
-                } else if ((nozzleMeasure.getStatus() == 0) && !(refuelingStartNozzleMeasure.getTotalCounter().equals(nozzleMeasure.getTotalCounter()))) {
+                } else if ((nozzleMeasure.getStatus() == 0) && refuelingStartNozzleMeasure!= null && !(refuelingStartNozzleMeasure.getTotalCounter().equals(nozzleMeasure.getTotalCounter()))) {
                     refuelingStartNozzleMeasure = nozzleMeasure;
                     nozzleMesuresRefuelingSeries.add(new ArrayList<NozzleMeasure>());
                     nozzleMesuresRefuelingSeries.get(nozzleMesuresRefuelingSeries.size() - 1).add(nozzleMeasure);
-                } else if (nozzleMeasure.getStatus() == 0 && refuelingStartNozzleMeasure != null) {
+                } else if (nozzleMeasure.getStatus() == 0 && refuelingStartNozzleMeasure != null  && (refuelingStartNozzleMeasure.getTotalCounter().equals(nozzleMeasure.getTotalCounter())) ) {
                     nozzleMesuresRefuelingSeries.get(nozzleMesuresRefuelingSeries.size() - 1).add(nozzleMeasure);
                 } else if (nozzleMeasure.getStatus() == 1 && refuelingStartNozzleMeasure != null) {
                     nozzleMesuresRefuelingSeries.get(nozzleMesuresRefuelingSeries.size() - 1).add(nozzleMeasure);

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import petrolanomaliesapplicator.anomaliesconfigurators.ProbeHangConfigurator;
-import petrolanomaliesapplicator.helpers.TimeCalculator;
+import petrolanomaliesapplicator.service.TimeCalculator;
 import petrolanomaliesapplicator.model.TankMeasure;
 
 /**
@@ -38,17 +38,19 @@ public class ProbeHangApplicator extends AnomalyApplicator {
     public static Collection<TankMeasure> applyProbeHang(Collection<TankMeasure> tankMeasures, Integer tankId, LocalDateTime startTime, LocalDateTime endTime) {
         Collection<TankMeasure> modifiedTankMeasures = new ArrayList<TankMeasure>();
         Double readFuelHeight = null;
+        Double readFuelVolume = null;
         for (TankMeasure tankMeasure : tankMeasures) {
-
+            TankMeasure modifiedTankMeasure = tankMeasure.clone();
             if (tankMeasure.getTankId().equals(tankId)
                     && (TimeCalculator.isDateInRange(startTime, endTime, tankMeasure.getDateTime()))) {
                 if (readFuelHeight == null) {
                     readFuelHeight = tankMeasure.getFuelHeight();
+                    readFuelVolume = tankMeasure.getFuelVolume();
                 } else {
-                    TankMeasure modifiedTankMeasure = tankMeasure.clone();
-                    modifiedTankMeasure.setFuelHeight(readFuelHeight);
-                    modifiedTankMeasures.add(modifiedTankMeasure);
+                    modifiedTankMeasure.verifySetFuelHeight(readFuelHeight);
+                    modifiedTankMeasure.verifySetFuelVolume(readFuelVolume);                  
                 }
+                modifiedTankMeasures.add(modifiedTankMeasure);
             } else {
                 modifiedTankMeasures.add(tankMeasure.clone());
             }
@@ -58,10 +60,10 @@ public class ProbeHangApplicator extends AnomalyApplicator {
     }
     
     public  Collection<TankMeasure> applyProbeHang(Collection<TankMeasure> tankMeasures) {
-       return applyProbeHang(tankMeasures, tankId, startTime, endTime);
+       return ProbeHangApplicator.this.applyProbeHang(tankMeasures, tankId, startTime, endTime);
     }
 
-    public TankMeasure applyPorbeHang(TankMeasure tankMeasure) {
+    public TankMeasure applyProbeHang(TankMeasure tankMeasure) {
         
         TankMeasure modifiedTankMeasure = tankMeasure.clone();
         if (tankMeasure.getTankId().equals(tankId)
@@ -71,8 +73,8 @@ public class ProbeHangApplicator extends AnomalyApplicator {
                 readFuelVolume = tankMeasure.getFuelVolume();
             } else {
 
-                modifiedTankMeasure.setFuelHeight(readFuelHeight);
-                modifiedTankMeasure.setFuelVolume(readFuelVolume);
+                modifiedTankMeasure.verifySetFuelHeight(readFuelHeight);
+                modifiedTankMeasure.verifySetFuelVolume(readFuelVolume);
             }
         }
 

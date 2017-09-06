@@ -47,9 +47,9 @@ public class TankMeasure {
     public TankMeasure clone() {
         TankMeasure tankMeasureCopy = new TankMeasure();
         tankMeasureCopy.setDateTime(dateTime);
-        tankMeasureCopy.setFuelHeight(fuelHeight);
+        tankMeasureCopy.verifySetFuelHeight(fuelHeight);
         tankMeasureCopy.setFuelTemperature(fuelTemperature);
-        tankMeasureCopy.setFuelVolume(fuelVolume);
+        tankMeasureCopy.verifySetFuelVolume(fuelVolume);
         tankMeasureCopy.setLocationId(locationId);
         tankMeasureCopy.setMeterId(meterId);
         tankMeasureCopy.setTankId(tankId);
@@ -96,16 +96,26 @@ public class TankMeasure {
         return fuelHeight;
     }
 
-    public void setFuelHeight(Double fuelHeight) {
-        this.fuelHeight = fuelHeight;
+    public void verifySetFuelHeight(Double fuelHeight) {
+        if(fuelHeight >= 0.0){
+            this.fuelHeight = fuelHeight;
+        }else{
+            this.fuelHeight = 0.0;
+        }
+        
     }
 
     public Double getFuelVolume() {
         return fuelVolume;
     }
 
-    public void setFuelVolume(Double fuelVolume) {
-        this.fuelVolume = fuelVolume;
+    public void verifySetFuelVolume(Double fuelVolume) {
+        if(fuelVolume >= 0.0){
+           this.fuelVolume = fuelVolume; 
+        }else{
+            this.fuelVolume = 0.0;
+        }
+        
     }
 
     public Double getFuelTemperature() {
